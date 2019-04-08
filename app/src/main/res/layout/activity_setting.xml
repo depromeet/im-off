@@ -15,7 +15,7 @@
         android:layout_marginTop="65dp"
         android:layout_marginStart="30dp"
         android:textSize="22sp"
-        android:fontFamily="@font/spoqa-regular"
+        android:fontFamily="@font/spoqa_regular"
         android:textColor="@color/text_normal"
         android:text="출퇴근 시간을 설정해주세요."/>
 
