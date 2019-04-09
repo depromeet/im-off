@@ -10,7 +10,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "lavingworks")
+@Entity(tableName = "leavingworks")
 public class LeavingWork {
     @PrimaryKey
     @NonNull
