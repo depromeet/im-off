@@ -10,9 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.depromeet.tmj.im_off.R;
+import com.depromeet.tmj.im_off.shared.RoundProgressBar;
 
 
 public class TimerFragment extends Fragment {
+    private RoundProgressBar roundProgressBar;
 
     public TimerFragment() {
     }
@@ -25,8 +27,19 @@ public class TimerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_timer, container, false);
+        View view = inflater.inflate(R.layout.fragment_timer, container, false);
+        initBinding(view);
+        initUi();
+        return view;
+    }
+
+    private void initBinding(View view) {
+        roundProgressBar = view.findViewById(R.id.round_progress);
+    }
+
+    private void initUi() {
+        roundProgressBar.setText("09:00");
+        roundProgressBar.setProgress(30);
     }
 
     public static TimerFragment newInstance() {
