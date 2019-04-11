@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">im-off</string>
+    <string name="app_name">칼퇴요정</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="noti_title">노티 제목</string>
+    <string name="noti_message">노티 내용</string>
 </resources>
