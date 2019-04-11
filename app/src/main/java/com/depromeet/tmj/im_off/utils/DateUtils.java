@@ -36,6 +36,16 @@ public class DateUtils {
         return offTime.getTime();
     }
 
+    public static Calendar todayOffCalendar() {
+        AppPreferencesDataStore dataStore = AppPreferencesDataStore.getInstance();
+        Calendar offTime = Calendar.getInstance();
+
+        offTime.set(Calendar.HOUR_OF_DAY,dataStore.getLeavingOffHour());
+        offTime.set(Calendar.MINUTE, dataStore.getLeavingOffMinute());
+
+        return offTime;
+    }
+
     public static Date todayStartWorkingTime() {
         AppPreferencesDataStore dataStore = AppPreferencesDataStore.getInstance();
         Calendar startTime = Calendar.getInstance();

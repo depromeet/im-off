@@ -2,8 +2,12 @@ package com.depromeet.tmj.im_off.utils.datastore;
 
 import com.depromeet.tmj.im_off.ImOffApplication;
 
+import java.util.Calendar;
+
 public class AppPreferencesDataStore extends SharedPreferencesDataStore {
     private static AppPreferencesDataStore INSTANCE = null;
+
+    public static final String CHANNEL_NOTIFICATION = "CHANNEL_NOTIFICATION";
 
     private static final String KEY_LEAVING_OFF_HOUR = "KEY_LEAVING_OFF_HOUR";
     private static final String KEY_LEAVING_OFF_MINUTE = "KEY_LEAVING_OFF_MINUTE";
@@ -22,7 +26,7 @@ public class AppPreferencesDataStore extends SharedPreferencesDataStore {
     }
 
     public int getLeavingOffHour() {
-        return getInt(KEY_LEAVING_OFF_HOUR, 0);
+        return getInt(KEY_LEAVING_OFF_HOUR, Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
     }
 
     public void putLeavingOffHour(int hour) {
@@ -30,7 +34,7 @@ public class AppPreferencesDataStore extends SharedPreferencesDataStore {
     }
 
     public int getLeavingOffMinute() {
-        return getInt(KEY_LEAVING_OFF_MINUTE, 0);
+        return getInt(KEY_LEAVING_OFF_MINUTE, Calendar.getInstance().get(Calendar.MINUTE));
     }
 
     public void putLeavingOffMinute(int minute) {
