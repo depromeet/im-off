@@ -8,4 +8,5 @@
     <!-- 타이머 화면 -->
     <string name="format_working">피곤한 %s\n오늘 꼭 칼퇴하세요.</string>
     <string name="format_leaving_work_time">%s %s 퇴근</string>
+    <string name="show_statistics">내 칼퇴 기록 보기</string>
 </resources>
