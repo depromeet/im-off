@@ -28,7 +28,7 @@
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="64dp"
         android:fontFamily="@font/jalnan"
         android:lineHeight="46sp"
         android:text="@string/format_working"
@@ -52,17 +52,15 @@
 
     <ImageView
         android:id="@+id/iv_bg_circle"
-        android:layout_width="0dp"
+        android:layout_width="338dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="60dp"
         android:layout_marginBottom="54dp"
         android:adjustViewBounds="true"
-        android:scaleType="fitStart"
         android:src="@drawable/image_dot_circle_blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="@id/tv_statistics"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <com.depromeet.tmj.im_off.shared.RoundProgressBar
         android:id="@+id/round_progress"
@@ -72,9 +70,6 @@
         app:layout_constraintBottom_toBottomOf="@id/iv_bg_circle"
         app:layout_constraintEnd_toEndOf="@id/iv_bg_circle"
         app:layout_constraintStart_toStartOf="@id/iv_bg_circle"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="14dp"
-        android:layout_marginBottom="14dp"
         app:max="100"
         app:roundProgressColor="@color/round_blue"
         app:textColor="@color/colorText"
