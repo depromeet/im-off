@@ -13,10 +13,10 @@ android {
 
     signingConfigs {
         debug {
-            storeFile file("keystore/debug.keystore")
+            //storeFile file("keystore/debug.keystore")
         }
         release {
-            storeFile file("keystore/release.keystore")
+            //storeFile file("keystore/release.keystore")
             storePassword "depromeet2019"
             keyAlias "depromeet"
             keyPassword "depromeet2019"
@@ -58,4 +58,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+
 }

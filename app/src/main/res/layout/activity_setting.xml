@@ -1,22 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".SettingActivity">
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="65dp"
+        android:layout_height="34dp"
         android:layout_marginStart="30dp"
-        android:textSize="22sp"
-        android:fontFamily="@font/spoqa-regular"
+        android:layout_marginTop="65dp"
+        android:fontFamily="@font/spoqaregular"
+        android:text="출퇴근 시간을 설정해주세요."
         android:textColor="@color/text_normal"
-        android:text="출퇴근 시간을 설정해주세요."/>
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- 출근 -->
+    <TextView
+        android:id="@+id/tv_am"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="130dp"
+        android:fontFamily="@font/spoqaregular"
+        android:text="오전"
+        android:textColor="@color/text_normal"
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_timepicker_am"
+        android:layout_width="wrap_content"
+        android:layout_height="46dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="114dp"
+        android:fontFamily="@font/spoqaregular"
+        android:background="#00ff0000"
+        android:text="00:00"
+        android:textSize="34sp"
+        app:layout_constraintStart_toEndOf="@id/tv_am"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--<TimePicker-->
+        <!--android:id="@+id/timepicker"-->
+        <!--style="@style/Widget.AppCompat.CompoundButton.CheckBox"-->
+        <!--android:layout_width="304dp"-->
+        <!--android:layout_height="403dp"-->
+        <!--android:layout_marginStart="7dp"-->
+        <!--android:layout_marginTop="1dp"-->
+        <!--android:fontFamily="@font/spoqaregular"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+    <TextView
+        android:id="@+id/tv_goto_work"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="130dp"
+        android:fontFamily="@font/spoqaregular"
+        android:text="에 출근해서"
+        android:textColor="@color/text_normal"
+        android:textSize="22sp"
+        app:layout_constraintStart_toEndOf="@+id/btn_timepicker_am"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--퇴근-->
+    <TextView
+        android:id="@+id/tv_pm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="186dp"
+        android:fontFamily="@font/spoqaregular"
+        android:text="오후"
+        android:textColor="@color/text_normal"
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_timepicker_pm"
+        android:layout_width="wrap_content"
+        android:layout_height="46dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="171dp"
+        android:fontFamily="@font/spoqaregular"
+        android:background="#00ff0000"
+        android:text="00:00"
+        android:textSize="34sp"
+        app:layout_constraintStart_toEndOf="@id/tv_pm"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_get_off"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="186dp"
+        android:fontFamily="@font/spoqaregular"
+        android:text="에 퇴근!"
+        android:textColor="@color/text_normal"
+        android:textSize="22sp"
+        app:layout_constraintStart_toEndOf="@+id/btn_timepicker_pm"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--하루 9시간 주 45시간 근무-->
+    <TextView
+        android:id="@+id/tv_worktime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="242dp"
+        android:fontFamily="@font/spoqaregular"
+        android:text="하루 9시간 주 45시간 근무"
+        android:textColor="@color/text_normal"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 직군선택 -->
+    <TextView
+        android:id="@+id/tv_select_job"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="327dp"
+        android:fontFamily="@font/spoqaregular"
+        android:text="직군을 선택해주세요"
+        android:textColor="@color/text_normal"
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 직군선택 버튼 -->
+    <Button
+        android:id="@+id/btn_select_job"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="369dp"
+        android:fontFamily="@font/spoqaregular"
+        android:background="#00ff0000"
+        android:text="직군선택 >"
+        android:textColor="@color/text_normal"
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 직군선택 picker  사이즈 수정필요-->
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/rl"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="169dp"
+        android:layout_width="304dp"
+        android:layout_height="404dp"
+        android:padding="16dp"
+        tools:context=".MainActivity"
+        android:background="#ffffff"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <NumberPicker
+            android:id="@+id/np"
+            android:layout_width="304dp"
+            android:layout_height="103dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="285dp"
+            android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="32dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="162dp"
+            android:layout_marginTop="255dp"
+            android:background="#FFFFFF"
+            android:text="확 인"
+            android:textColor="@color/text_normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="32dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="237dp"
+            android:layout_marginTop="255dp"
+            android:background="#FFFFFF"
+            android:text="취 소"
+            android:textColor="@color/text_normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
