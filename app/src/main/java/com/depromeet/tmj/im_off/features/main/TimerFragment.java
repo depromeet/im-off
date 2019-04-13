@@ -10,17 +10,24 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.depromeet.tmj.im_off.R;
 import com.depromeet.tmj.im_off.SettingActivity;
 import com.depromeet.tmj.im_off.shared.RoundProgressBar;
+import com.depromeet.tmj.im_off.utils.DateUtils;
+
+import java.util.Date;
 
 
 public class TimerFragment extends Fragment {
     private RoundProgressBar roundProgressBar;
     private ImageButton btnSetting;
+    private ImageView ivBackgroundCircle;
     private TextView tvStatistics;
     private ScrollCallback scrollCallBack;
 
@@ -30,7 +37,7 @@ public class TimerFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if(context instanceof ScrollCallback) {
+        if (context instanceof ScrollCallback) {
             scrollCallBack = (ScrollCallback) context;
         } else {
             throw new RuntimeException("ScrollCallback is not implemented");
@@ -55,11 +62,15 @@ public class TimerFragment extends Fragment {
         roundProgressBar = view.findViewById(R.id.round_progress);
         btnSetting = view.findViewById(R.id.btn_setting);
         tvStatistics = view.findViewById(R.id.tv_statistics);
+        ivBackgroundCircle = view.findViewById(R.id.iv_bg_circle);
     }
 
     private void initUi() {
         roundProgressBar.setText("09:00");
-        roundProgressBar.setProgress(30);
+        roundProgressBar.setTimeWithAnim(DateUtils.todayStartWorkingTime(), new Date());
+
+        Animation rotation = AnimationUtils.loadAnimation(getContext(), R.anim.rotate);
+        ivBackgroundCircle.startAnimation(rotation);
 
         btnSetting.setOnClickListener(view -> {
             Intent intent = new Intent(getContext(), SettingActivity.class);

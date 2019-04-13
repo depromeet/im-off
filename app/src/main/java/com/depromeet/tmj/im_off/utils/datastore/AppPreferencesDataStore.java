@@ -42,7 +42,7 @@ public class AppPreferencesDataStore extends SharedPreferencesDataStore {
     }
 
     public int getStartWorkingHour() {
-        return getInt(KEY_START_WORKING_HOUR, 0);
+        return getInt(KEY_START_WORKING_HOUR, 9);
     }
 
     public void putStartWorkingHour(int hour) {

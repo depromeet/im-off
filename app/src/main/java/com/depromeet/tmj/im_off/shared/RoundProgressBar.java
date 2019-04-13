@@ -9,9 +9,17 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Transformation;
 
 import com.depromeet.tmj.im_off.R;
+import com.depromeet.tmj.im_off.utils.DateUtils;
+import com.depromeet.tmj.im_off.utils.DisplayUtils;
 
+import java.util.Date;
+
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 public class RoundProgressBar extends View {
@@ -25,10 +33,9 @@ public class RoundProgressBar extends View {
     private float roundWidth;
     private int keepRoundType;
     private String text;
+    private float startAngle;
+    private float sweepAngle;
     public static final int KEEP = 1;
-
-    private int max;
-    private int progress;
     private boolean textIsDisplayable;
 
     public RoundProgressBar(Context context) {
@@ -43,6 +50,8 @@ public class RoundProgressBar extends View {
         super(context, attrs, defStyle);
 
         paint = new Paint();
+        startAngle = 180f;
+        sweepAngle = 0f;
 
         TypedArray mTypedArray = context.obtainStyledAttributes(attrs, R.styleable.RoundProgressBar);
         //Get a custom attribute and the default value
@@ -52,9 +61,9 @@ public class RoundProgressBar extends View {
         textSize = mTypedArray.getDimension(R.styleable.RoundProgressBar_textSize, 15);
         roundWidth = mTypedArray.getDimension(R.styleable.RoundProgressBar_roundWidth, 5);
         keepRoundType = mTypedArray.getInt(R.styleable.RoundProgressBar_keepRoundType, 0);//Keep the outer ring is filled circle
-        max = mTypedArray.getInteger(R.styleable.RoundProgressBar_max, 100);
         textIsDisplayable = mTypedArray.getBoolean(R.styleable.RoundProgressBar_textIsDisplayable, true);
         text = mTypedArray.getString(R.styleable.RoundProgressBar_text);
+        roundBackgroundColor = ContextCompat.getColor(getContext(), R.color.white);
 
         mTypedArray.recycle();
     }
@@ -74,7 +83,6 @@ public class RoundProgressBar extends View {
         paint.setStyle(Paint.Style.STROKE); //A hollow
         paint.setStrokeWidth(roundWidth); //Set the ring width
         paint.setAntiAlias(true);  //Antialiasing
-        canvas.drawCircle(centre, centre, radius, paint); //Draw a circle
 
         /**
          * In an arc, draw ring schedule
@@ -84,22 +92,25 @@ public class RoundProgressBar extends View {
         paint.setStrokeWidth(roundWidth); //Set the ring width
         paint.setColor(roundProgressColor);  //The progress of the color settings
 
-        RectF oval = null;
+        RectF oval;
         if (keepRoundType == KEEP) {//Retaining ring
             radius -= roundWidth;
         }
 
-        oval = new RectF(centre - radius, centre - radius, centre
-                + radius, centre + radius);  //Used to define the shape and the size of the circular boundaries
+        int offset = DisplayUtils.dpToPixel(getContext(), 1);
+        oval = new RectF(centre - radius - offset, centre - radius - offset,
+                centre + radius + offset, centre + radius + offset);  //Used to define the shape and the size of the circular boundaries
 
         paint.setStyle(Paint.Style.FILL_AND_STROKE);
         paint.setColor(roundBackgroundColor);
-        canvas.drawArc(oval, 0, 360, true, paint);  //According to the progress of an arc
+        canvas.drawArc(oval, startAngle, sweepAngle, true, paint);  //According to the progress of an arc
+
+        int innerDiff = DisplayUtils.dpToPixel(getContext(), 14);
+        RectF innerOval = new RectF(centre - radius + innerDiff, centre - radius + innerDiff,
+                centre + radius - innerDiff, centre + radius - innerDiff);  //Used to define the shape and the size of the circular boundaries
 
         paint.setColor(roundProgressColor);
-        if (progress != 0) // TODO("시간에 따른 각도 계산 필요")
-            canvas.drawArc(oval, -90, 180, true, paint);  //According to the progress of an arc
-
+        canvas.drawArc(innerOval, startAngle, sweepAngle, true, paint);  //According to the progress of an arc
         /**
          * Painting progress percentage
          */
@@ -109,61 +120,35 @@ public class RoundProgressBar extends View {
         paint.setTypeface(ResourcesCompat.getFont(getContext(), R.font.jalnan)); //Set the font
 
         if (textIsDisplayable) {
-
             float textWidth = paint.measureText(text);   //Measure the font width, we need according to the font width in the middle ring
             canvas.drawText(text, centre - textWidth / 2, centre + textSize / 2, paint); //Draw the percentage
         }
 
     }
 
-    public synchronized int getMax() {
-        return max;
+    public void setTime(Date start, Date current) {
+        startAngle = DateUtils.time2Angle(start); // 일 시작 시간
+        sweepAngle = DateUtils.time2SweepAngle(start, current); // 일 한 시간
+        invalidate();
     }
 
-    public synchronized void setMax(int max) {
-        if (max < 0) {
-            throw new IllegalArgumentException("max not less than 0");
-        }
-        this.max = max;
-    }
+    public void setTimeWithAnim(Date start, Date current) {
+        startAngle = DateUtils.time2Angle(start); // 일 시작 시간
+        sweepAngle = DateUtils.time2SweepAngle(start, current); // 일 한 시간
 
-    public synchronized int getProgress() {
-        return progress;
-    }
+        ArcAngleAnimation animation = new ArcAngleAnimation(this, sweepAngle);
 
-    public synchronized void setProgress(int progress) {
-        if (progress < 0) {
-            throw new IllegalArgumentException("progress not less than 0");
-        }
-        if (progress > max) {
-            progress = max;
-        }
-        if (progress <= max) {
-            this.progress = progress;
-            postInvalidate();
-        }
-
-    }
-
-
-    public int getCricleColor() {
-        return roundColor;
+        animation.setDuration(2000);
+        startAnimation(animation);
+        requestLayout();
     }
 
     public void setCricleColor(int cricleColor) {
         this.roundColor = cricleColor;
     }
 
-    public int getCricleProgressColor() {
-        return roundProgressColor;
-    }
-
     public void setCricleProgressColor(int cricleProgressColor) {
         this.roundProgressColor = cricleProgressColor;
-    }
-
-    public int getCricleBackgroundColor() {
-        return roundBackgroundColor;
     }
 
     public void setCricleBackgroundColor(int roundBackgroundColor) {
@@ -171,24 +156,12 @@ public class RoundProgressBar extends View {
         invalidate();
     }
 
-    public int getTextColor() {
-        return textColor;
-    }
-
     public void setTextColor(int textColor) {
         this.textColor = textColor;
     }
 
-    public float getTextSize() {
-        return textSize;
-    }
-
     public void setTextSize(float textSize) {
         this.textSize = textSize;
-    }
-
-    public float getRoundWidth() {
-        return roundWidth;
     }
 
     public void setText(String text) {
@@ -200,4 +173,34 @@ public class RoundProgressBar extends View {
         this.roundWidth = roundWidth;
     }
 
+    public float getStartAngle() {
+        return startAngle;
+    }
+
+    public void setStartAngle(float startAngle) {
+        this.startAngle = startAngle;
+    }
+
+    public void setSweepAngle(float sweepAngle) {
+        this.sweepAngle = sweepAngle;
+    }
+
+    private class ArcAngleAnimation extends Animation {
+        private RoundProgressBar roundProgressBar;
+        private float sweepAngle;
+
+        public ArcAngleAnimation(RoundProgressBar roundProgressBar, float sweepAngle) {
+            this.sweepAngle = sweepAngle;
+            this.roundProgressBar = roundProgressBar;
+            setInterpolator(new DecelerateInterpolator());
+        }
+
+        @Override
+        protected void applyTransformation(float interpolatedTime, Transformation transformation) {
+            float angle = sweepAngle * interpolatedTime;
+
+            roundProgressBar.setSweepAngle(angle);
+            roundProgressBar.invalidate();
+        }
+    }
 }
