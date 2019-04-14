@@ -1,8 +1,7 @@
 package com.depromeet.tmj.im_off.data.source.local;
 
 
-import android.content.Context;
-
+import com.depromeet.tmj.im_off.ImOffApplication;
 import com.depromeet.tmj.im_off.data.LeavingWork;
 
 import androidx.room.Database;
@@ -17,10 +16,10 @@ public abstract class ImOffDatabase extends RoomDatabase {
 
     private static final Object sLock = new Object();
 
-    public static ImOffDatabase getInstance(Context context) {
+    public static ImOffDatabase getInstance() {
         synchronized (sLock) {
             if (INSTANCE == null) {
-                INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+                INSTANCE = Room.databaseBuilder(ImOffApplication.getApplication(),
                         ImOffDatabase.class, "leaving-work.db").build();
             }
             return INSTANCE;
