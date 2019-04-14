@@ -1,6 +1,11 @@
 package com.depromeet.tmj.im_off;
 
+import com.depromeet.tmj.im_off.utils.DateUtils;
+import com.depromeet.tmj.im_off.utils.StateUtils;
+
 import org.junit.Test;
+
+import java.util.Calendar;
 
 import static org.junit.Assert.*;
 
@@ -11,7 +16,11 @@ import static org.junit.Assert.*;
  */
 public class ExampleUnitTest {
     @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+    public void state_isCorrect() {
+        Calendar calendar = DateUtils.nowCalendar();
+
+        String state = StateUtils.getCurrentState(calendar);
+
+        assertEquals(StateUtils.STATE_WEEKEND, state);
     }
 }

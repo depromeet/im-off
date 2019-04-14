@@ -25,13 +25,27 @@ public class DateUtils {
         }
     }
 
-    public static Long now() {
+    public static Long nowTime() {
         return new Date().getTime();
+    }
+
+    public static Calendar nowCalendar() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(nowTime());
+
+        return calendar;
+    }
+
+    public static String yesterday() {
+        Calendar calendar = nowCalendar();
+        calendar.add(Calendar.DAY_OF_MONTH, -1);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+        return simpleDateFormat.format(calendar.getTime());
     }
 
     public static Date todayOffStartTime() {
         AppPreferencesDataStore dataStore = AppPreferencesDataStore.getInstance();
-        Calendar offTime = Calendar.getInstance();
+        Calendar offTime = nowCalendar();
 
         offTime.set(Calendar.HOUR_OF_DAY, dataStore.getLeavingOffHour());
         offTime.set(Calendar.MINUTE, dataStore.getLeavingOffMinute());
@@ -84,5 +98,41 @@ public class DateUtils {
         int minute = (int) (diff / (1000 * 60)) % 60;
 
         return (ANGLE_HOUR * hours) + (ANGLE_MINUTE * minute);
+    }
+
+    public static String workingTime() {
+        long diff = DateUtils.todayOffStartTime().getTime() - DateUtils.todayStartWorkingTime().getTime();
+        int hours = (int) diff / (1000 * 60 * 60);
+        int minute = (int) (diff / (1000 * 60)) % 60;
+
+        return String.format(Locale.KOREA, "%d:%02d", hours, minute);
+    }
+
+    public static String remainingTime(Date startDate, Date current) {
+        long diff = current.getTime() - startDate.getTime();
+        int hours = (int) diff / (1000 * 60 * 60);
+        int minute = (int) (diff / (1000 * 60)) % 60;
+
+        return String.format(Locale.KOREA, "%d:%02d", hours, minute);
+    }
+
+    public static String nightWorkingTime() {
+        long diff = new Date().getTime() - todayOffStartTime().getTime();
+        int hours = (int) diff / (1000 * 60 * 60);
+        int minute = (int) (diff / (1000 * 60)) % 60;
+
+        return String.format(Locale.KOREA, "+ %d:%02d", hours, minute);
+    }
+
+    public static String nightWorkingTimeTitle() {
+        long diff = new Date().getTime() - todayOffStartTime().getTime();
+        int hours = (int) diff / (1000 * 60 * 60);
+        int minute = (int) (diff / (1000 * 60)) % 60;
+
+        return String.format(Locale.KOREA, "%d시간 %d분 더 일하는 중..", hours, minute);
+    }
+
+    public static int getDayOfWeek() {
+        return Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
     }
 }

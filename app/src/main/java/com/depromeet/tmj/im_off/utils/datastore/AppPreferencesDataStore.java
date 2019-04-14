@@ -26,7 +26,7 @@ public class AppPreferencesDataStore extends SharedPreferencesDataStore {
     }
 
     public int getLeavingOffHour() {
-        return getInt(KEY_LEAVING_OFF_HOUR, Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
+        return getInt(KEY_LEAVING_OFF_HOUR, 18);
     }
 
     public void putLeavingOffHour(int hour) {
@@ -34,7 +34,7 @@ public class AppPreferencesDataStore extends SharedPreferencesDataStore {
     }
 
     public int getLeavingOffMinute() {
-        return getInt(KEY_LEAVING_OFF_MINUTE, Calendar.getInstance().get(Calendar.MINUTE));
+        return getInt(KEY_LEAVING_OFF_MINUTE, 0);
     }
 
     public void putLeavingOffMinute(int minute) {

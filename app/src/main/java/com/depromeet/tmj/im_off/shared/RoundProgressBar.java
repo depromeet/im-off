@@ -37,6 +37,7 @@ public class RoundProgressBar extends View {
     private float sweepAngle;
     public static final int KEEP = 1;
     private boolean textIsDisplayable;
+    private boolean arcIsDisplayable = true;
 
     public RoundProgressBar(Context context) {
         this(context, null);
@@ -105,12 +106,14 @@ public class RoundProgressBar extends View {
         paint.setColor(roundBackgroundColor);
         canvas.drawArc(oval, startAngle, sweepAngle, true, paint);  //According to the progress of an arc
 
-        int innerDiff = DisplayUtils.dpToPixel(getContext(), 14);
-        RectF innerOval = new RectF(centre - radius + innerDiff, centre - radius + innerDiff,
-                centre + radius - innerDiff, centre + radius - innerDiff);  //Used to define the shape and the size of the circular boundaries
+        if(arcIsDisplayable) {
+            int innerDiff = DisplayUtils.dpToPixel(getContext(), 14);
+            RectF innerOval = new RectF(centre - radius + innerDiff, centre - radius + innerDiff,
+                    centre + radius - innerDiff, centre + radius - innerDiff);  //Used to define the shape and the size of the circular boundaries
 
-        paint.setColor(roundProgressColor);
-        canvas.drawArc(innerOval, startAngle, sweepAngle, true, paint);  //According to the progress of an arc
+            paint.setColor(roundProgressColor);
+            canvas.drawArc(innerOval, startAngle, sweepAngle, true, paint);  //According to the progress of an arc
+        }
         /**
          * Painting progress percentage
          */
@@ -183,6 +186,10 @@ public class RoundProgressBar extends View {
 
     public void setSweepAngle(float sweepAngle) {
         this.sweepAngle = sweepAngle;
+    }
+
+    public void setArcIsDisplayable(boolean arcIsDisplayable) {
+        this.arcIsDisplayable = arcIsDisplayable;
     }
 
     private class ArcAngleAnimation extends Animation {

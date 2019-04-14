@@ -2,8 +2,9 @@ package com.depromeet.tmj.im_off.data;
 
 import com.depromeet.tmj.im_off.utils.DateUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -15,7 +16,7 @@ public class LeavingWork {
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "entryid")
-    private final String id;
+    private String id;
 
     @NonNull
     @ColumnInfo(name = "leavingtime")
@@ -25,13 +26,13 @@ public class LeavingWork {
     private boolean isKaltoe;
 
     public LeavingWork(@NonNull Long leavingTime) {
-        id = UUID.randomUUID().toString();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+        this.id = dateFormat.format(new Date(leavingTime));
         this.leavingTime = leavingTime;
 
         this.isKaltoe =
                 (new Date(leavingTime).after(DateUtils.todayOffStartTime()))
                         && (new Date(leavingTime).before(DateUtils.todayOffEndTime()));
-
     }
 
     @NonNull
@@ -46,5 +47,17 @@ public class LeavingWork {
 
     public boolean isKaltoe() {
         return isKaltoe;
+    }
+
+    public void setId(@NonNull String id) {
+        this.id = id;
+    }
+
+    public void setLeavingTime(@NonNull Long leavingTime) {
+        this.leavingTime = leavingTime;
+    }
+
+    public void setKaltoe(boolean kaltoe) {
+        isKaltoe = kaltoe;
     }
 }
