@@ -77,6 +77,30 @@
         app:textIsDisplayable="true"
         app:textSize="65sp" />
 
+    <ImageView
+        android:id="@+id/btn_leaving"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginBottom="21dp"
+        android:src="@drawable/shape_oval_blue"
+        app:layout_constraintBottom_toBottomOf="@id/iv_bg_circle"
+        app:layout_constraintEnd_toEndOf="@id/iv_bg_circle"
+        app:layout_constraintStart_toEndOf="@id/iv_bg_circle" />
+
+    <TextView
+        android:id="@+id/tv_leaving"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/spoqa_bold"
+        android:includeFontPadding="false"
+        android:text="@string/leaving"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@id/btn_leaving"
+        app:layout_constraintEnd_toEndOf="@id/btn_leaving"
+        app:layout_constraintStart_toStartOf="@id/btn_leaving"
+        app:layout_constraintTop_toTopOf="@id/btn_leaving" />
+
     <TextView
         android:id="@+id/tv_statistics"
         android:layout_width="wrap_content"

@@ -26,11 +26,15 @@ public interface LeavingWorkDataSource {
         void onCountLoaded(int count);
     }
 
+    interface SaveCallback {
+        void onSuccess();
+    }
+
     void getLeavingWorks(@NonNull LoadLeavingWorkCallaack callback);
 
     void getLeavingWork(@NonNull String id, @NonNull GetLeavingWorkCallback callback);
 
     void getKaltoeCount(@NonNull GetKaltoeCallback callback);
 
-    void saveLeavingWork(LeavingWork leavingWork);
+    void saveLeavingWork(LeavingWork leavingWork, @NonNull SaveCallback callback);
 }

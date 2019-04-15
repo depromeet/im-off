@@ -1,6 +1,7 @@
 package com.depromeet.tmj.im_off.features.main;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.depromeet.tmj.im_off.BuildConfig;
 import com.depromeet.tmj.im_off.R;
@@ -25,12 +27,12 @@ import com.depromeet.tmj.im_off.utils.Injection;
 import com.depromeet.tmj.im_off.utils.datastore.AppPreferencesDataStore;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 public class TimerFragment extends Fragment {
+    private static final String TAG = "TimerFragment";
     private AppPreferencesDataStore dataStore;
 
     private RoundProgressBar roundProgressBar;
@@ -40,6 +42,7 @@ public class TimerFragment extends Fragment {
     private ScrollCallback scrollCallBack;
     private TextView tvTitle;
     private TextView tvLeavingWork;
+    private ImageView btnLeaving;
 
     public TimerFragment() {
     }
@@ -76,13 +79,15 @@ public class TimerFragment extends Fragment {
         tvStatistics = view.findViewById(R.id.tv_statistics);
         ivBackgroundCircle = view.findViewById(R.id.iv_bg_circle);
         tvLeavingWork = view.findViewById(R.id.tv_leaving_work_time);
+        btnLeaving = view.findViewById(R.id.btn_leaving);
     }
 
     private void initUi() {
         Calendar calendar = DateUtils.nowCalendar();
 
         if (BuildConfig.DEBUG) {
-//            calendar.set(Calendar.HOUR_OF_DAY, 17);
+//            calendar.set(Calendar.DAY_OF_MONTH, 16);
+//            calendar.set(Calendar.HOUR_OF_DAY, 7);
         }
         setCurrentState(calendar);
 
@@ -96,6 +101,10 @@ public class TimerFragment extends Fragment {
 
         tvStatistics.setOnClickListener(view -> {
             scrollCallBack.onClickStatistics();
+        });
+
+        btnLeaving.setOnClickListener(view -> {
+            showLeavingDialog();
         });
     }
 
@@ -114,7 +123,7 @@ public class TimerFragment extends Fragment {
         roundProgressBar.setArcIsDisplayable(false);
     }
 
-    private void setWaitUi() {
+    private void setWaitUi(Calendar calendar) {
         // title 설정
         tvTitle.setText(String.format(getString(R.string.format_working),
                 getString(DayType.values()[DateUtils.getDayOfWeek()].getMessageRes())));
@@ -126,7 +135,7 @@ public class TimerFragment extends Fragment {
         tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
                 "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
 
-        roundProgressBar.setText(DateUtils.workingTime());
+        roundProgressBar.setText(DateUtils.workingTime(calendar));
     }
 
     private void setWorkingUi(Calendar calendar) {
@@ -143,7 +152,7 @@ public class TimerFragment extends Fragment {
 
         // 그래프 설정
         roundProgressBar.setText(DateUtils.remainingTime(DateUtils.todayOffStartTime(), calendar.getTime()));
-        roundProgressBar.setTimeWithAnim(DateUtils.todayStartWorkingTime(), calendar.getTime());
+        roundProgressBar.setTimeWithAnim(DateUtils.todayStartWorkingTime(calendar), calendar.getTime());
     }
 
     private void setNightWorkingUi(Calendar calendar) {
@@ -183,28 +192,71 @@ public class TimerFragment extends Fragment {
         if (calendar.get(Calendar.DAY_OF_WEEK) == 1 || calendar.get(Calendar.DAY_OF_WEEK) == 7) {
             setWeekendUi();
         } else {
-            Injection.provideLeavingWorkRepository().getLeavingWork(DateUtils.yesterday(),
+
+            Injection.provideLeavingWorkRepository().getLeavingWork(DateUtils.calendar2String(calendar),
                     new LeavingWorkDataSource.GetLeavingWorkCallback() {
                         @Override
                         public void onDataLoaded(LeavingWork leavingWork) {
-                            if (AppPreferencesDataStore.getInstance().getStartWorkingHour()
-                                    - calendar.get(Calendar.HOUR_OF_DAY) <= 3) {
-                                setWaitUi();
+                            if (AppPreferencesDataStore.getInstance().getStartWorkingHour() - calendar.get(Calendar.HOUR_OF_DAY) <= 3
+                                    && AppPreferencesDataStore.getInstance().getStartWorkingHour() - calendar.get(Calendar.HOUR_OF_DAY) > 0) {
+                                setWaitUi(calendar);
                             } else {
+                                Toast.makeText(getContext(), "퇴근기록 보여줘야함", Toast.LENGTH_SHORT).show();
                                 // TODO("setResultUi();")
                             }
                         }
 
                         @Override
                         public void onDataNotAvailable() {
-                            if (DateUtils.todayOffStartTime().after(calendar.getTime())) {
-                                setWorkingUi(calendar);
+                            if(calendar.getTime().before(DateUtils.todayStartWorkingTime(calendar))) {
+                                // 지금 시간이 출근시간 전 -> 어제걸로 다시 조회
+                                Injection.provideLeavingWorkRepository().getLeavingWork(DateUtils.yesterday(calendar), new LeavingWorkDataSource.GetLeavingWorkCallback() {
+                                    @Override
+                                    public void onDataLoaded(LeavingWork leavingWork) {
+                                        // 있으나 출근 3시간 전이면 Wait
+                                        if (AppPreferencesDataStore.getInstance().getStartWorkingHour() - calendar.get(Calendar.HOUR_OF_DAY) <= 3
+                                                && AppPreferencesDataStore.getInstance().getStartWorkingHour() - calendar.get(Calendar.HOUR_OF_DAY) > 0) {
+                                            setWaitUi(calendar);
+                                        } else {
+                                            Toast.makeText(getContext(), "퇴근기록 보여줘야함", Toast.LENGTH_SHORT).show();
+                                            // TODO("setResultUi();")
+                                            // 아니면 result
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onDataNotAvailable() {
+                                        // 없으면 야근중
+                                        setNightWorkingUi(calendar);
+                                    }
+                                });
                             } else {
-                                setNightWorkingUi(calendar);
+                                // 출근시간 이후면 working
+                                setWorkingUi(calendar);
                             }
                         }
                     });
         }
+    }
+
+    private void showLeavingDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("퇴근")
+                .setMessage("퇴근 하나요?")
+                .setCancelable(true)
+                .setPositiveButton("퇴근", (anInterface, i) -> {
+                    Toast.makeText(getContext(), "퇴근!!", Toast.LENGTH_SHORT).show();
+                    leaving();
+                })
+                .setNegativeButton("야근..ㅠ", (anInterface, i) -> {
+                    anInterface.dismiss();
+                }).show();
+    }
+
+    private void leaving() {
+        LeavingWork leavingWork = new LeavingWork(DateUtils.nowTime());
+        Injection.provideLeavingWorkRepository().saveLeavingWork(leavingWork, () ->
+                setCurrentState(DateUtils.nowCalendar()));
     }
 
     public static TimerFragment newInstance() {
