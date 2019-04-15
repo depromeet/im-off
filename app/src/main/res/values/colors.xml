@@ -8,4 +8,5 @@
     <color name="white">#ffffff</color>
     <color name="round_blue">#25f2ff</color>
     <color name="round_red">#ff295b</color>
+    <color name="round_leaving">#3a2eff</color>
 </resources>

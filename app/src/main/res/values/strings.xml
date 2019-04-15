@@ -17,4 +17,5 @@
     <string name="sat">토요일</string>
     <string name="sun">일요일</string>
     <string name="format_night_working">야근중입니다.\n어서 퇴근하세요!</string>
+    <string name="leaving">퇴근</string>
 </resources>

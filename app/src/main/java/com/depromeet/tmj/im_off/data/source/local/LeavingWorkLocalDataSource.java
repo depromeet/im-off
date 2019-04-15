@@ -24,7 +24,7 @@ public class LeavingWorkLocalDataSource implements LeavingWorkDataSource {
 
     public static LeavingWorkLocalDataSource getInstance(@NonNull AppExecutors appExecutors,
                                                          @NonNull LeavingWorkDao leavingWorkDao) {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             synchronized (LeavingWorkLocalDataSource.class) {
                 INSTANCE = new LeavingWorkLocalDataSource(appExecutors, leavingWorkDao);
             }
@@ -38,7 +38,7 @@ public class LeavingWorkLocalDataSource implements LeavingWorkDataSource {
             final List<LeavingWork> leavingWorks = leavingWorkDao.getLeavingWorks();
 
             appExecutors.getMainThread().execute(() -> {
-                if(leavingWorks.isEmpty()) {
+                if (leavingWorks.isEmpty()) {
                     callback.onDataNotAvailable();
                 } else {
                     callback.onDataLoaded(leavingWorks);
@@ -54,7 +54,7 @@ public class LeavingWorkLocalDataSource implements LeavingWorkDataSource {
             final LeavingWork leavingWork = leavingWorkDao.getLeavingWorkById(entryId);
 
             appExecutors.getMainThread().execute(() -> {
-                if(leavingWork != null) {
+                if (leavingWork != null) {
                     callback.onDataLoaded(leavingWork);
                 } else {
                     callback.onDataNotAvailable();
@@ -76,9 +76,14 @@ public class LeavingWorkLocalDataSource implements LeavingWorkDataSource {
         appExecutors.getDiskIO().execute(runnable);
     }
 
+
     @Override
-    public void saveLeavingWork(LeavingWork leavingWork) {
-        Runnable runnable = () -> leavingWorkDao.insertLeavingWork(leavingWork);
+    public void saveLeavingWork(LeavingWork leavingWork, @NonNull SaveCallback callback) {
+        Runnable runnable = () -> {
+            leavingWorkDao.insertLeavingWork(leavingWork);
+
+            appExecutors.getMainThread().execute(callback::onSuccess);
+        };
 
         appExecutors.getDiskIO().execute(runnable);
     }

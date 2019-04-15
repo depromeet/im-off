@@ -36,10 +36,21 @@ public class DateUtils {
         return calendar;
     }
 
-    public static String yesterday() {
-        Calendar calendar = nowCalendar();
+    public static String yesterday(Calendar calendar) {
         calendar.add(Calendar.DAY_OF_MONTH, -1);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+        return simpleDateFormat.format(calendar.getTime());
+    }
+
+    public static String calendar2String(Calendar calendar) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+        return simpleDateFormat.format(calendar.getTime());
+    }
+
+    public static String today() {
+        Calendar calendar = nowCalendar();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+
         return simpleDateFormat.format(calendar.getTime());
     }
 
@@ -63,10 +74,12 @@ public class DateUtils {
         return offTime;
     }
 
-    public static Date todayStartWorkingTime() {
+    public static Date todayStartWorkingTime(Calendar calendar) {
         AppPreferencesDataStore dataStore = AppPreferencesDataStore.getInstance();
-        Calendar startTime = Calendar.getInstance();
+        Calendar startTime = nowCalendar();
 
+        startTime.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
+        startTime.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH));
         startTime.set(Calendar.HOUR_OF_DAY, dataStore.getStartWorkingHour());
         startTime.set(Calendar.MINUTE, dataStore.getStartWorkingMinute());
 
@@ -100,8 +113,8 @@ public class DateUtils {
         return (ANGLE_HOUR * hours) + (ANGLE_MINUTE * minute);
     }
 
-    public static String workingTime() {
-        long diff = DateUtils.todayOffStartTime().getTime() - DateUtils.todayStartWorkingTime().getTime();
+    public static String workingTime(Calendar calendar) {
+        long diff = DateUtils.todayOffStartTime().getTime() - DateUtils.todayStartWorkingTime(calendar).getTime();
         int hours = (int) diff / (1000 * 60 * 60);
         int minute = (int) (diff / (1000 * 60)) % 60;
 
