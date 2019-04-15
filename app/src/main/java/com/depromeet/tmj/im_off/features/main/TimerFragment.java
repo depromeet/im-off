@@ -82,7 +82,7 @@ public class TimerFragment extends Fragment {
         Calendar calendar = DateUtils.nowCalendar();
 
         if (BuildConfig.DEBUG) {
-            //calendar.set(Calendar.DAY_OF_MONTH, 15);
+//            calendar.set(Calendar.HOUR_OF_DAY, 17);
         }
         setCurrentState(calendar);
 
@@ -129,7 +129,7 @@ public class TimerFragment extends Fragment {
         roundProgressBar.setText(DateUtils.workingTime());
     }
 
-    private void setWorkingUi() {
+    private void setWorkingUi(Calendar calendar) {
         // title 설정
         tvTitle.setText(String.format(getString(R.string.format_working),
                 getString(DayType.values()[DateUtils.getDayOfWeek()].getMessageRes())));
@@ -142,11 +142,11 @@ public class TimerFragment extends Fragment {
                 "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
 
         // 그래프 설정
-        roundProgressBar.setText(DateUtils.remainingTime(DateUtils.todayStartWorkingTime(), new Date()));
-        roundProgressBar.setTimeWithAnim(DateUtils.todayStartWorkingTime(), new Date());
+        roundProgressBar.setText(DateUtils.remainingTime(DateUtils.todayOffStartTime(), calendar.getTime()));
+        roundProgressBar.setTimeWithAnim(DateUtils.todayStartWorkingTime(), calendar.getTime());
     }
 
-    private void setNightWorkingUi() {
+    private void setNightWorkingUi(Calendar calendar) {
         // title 설정
         tvTitle.setText(getString(R.string.format_night_working));
 
@@ -159,7 +159,7 @@ public class TimerFragment extends Fragment {
         // 그래프 설정
         roundProgressBar.setCricleProgressColor(ContextCompat.getColor(getContext(), R.color.round_red));
         roundProgressBar.setText(DateUtils.nightWorkingTime());
-        roundProgressBar.setTimeWithAnim(DateUtils.todayOffStartTime(), new Date());
+        roundProgressBar.setTimeWithAnim(DateUtils.todayOffStartTime(), calendar.getTime());
     }
 
 
@@ -197,10 +197,10 @@ public class TimerFragment extends Fragment {
 
                         @Override
                         public void onDataNotAvailable() {
-                            if (DateUtils.todayOffStartTime().after(new Date())) {
-                                setWorkingUi();
+                            if (DateUtils.todayOffStartTime().after(calendar.getTime())) {
+                                setWorkingUi(calendar);
                             } else {
-                                setNightWorkingUi();
+                                setNightWorkingUi(calendar);
                             }
                         }
                     });

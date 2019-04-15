@@ -108,8 +108,8 @@ public class DateUtils {
         return String.format(Locale.KOREA, "%d:%02d", hours, minute);
     }
 
-    public static String remainingTime(Date startDate, Date current) {
-        long diff = current.getTime() - startDate.getTime();
+    public static String remainingTime(Date offStartDate, Date current) {
+        long diff = offStartDate.getTime() - current.getTime();
         int hours = (int) diff / (1000 * 60 * 60);
         int minute = (int) (diff / (1000 * 60)) % 60;
 
