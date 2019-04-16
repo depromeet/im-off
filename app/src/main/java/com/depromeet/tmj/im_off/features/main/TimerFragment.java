@@ -27,6 +27,7 @@ import com.depromeet.tmj.im_off.utils.Injection;
 import com.depromeet.tmj.im_off.utils.datastore.AppPreferencesDataStore;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -123,6 +124,37 @@ public class TimerFragment extends Fragment {
         roundProgressBar.setArcIsDisplayable(false);
     }
 
+    private void setKaltoeResultUi(LeavingWork leavingWork) {
+        // title 설정
+        tvTitle.setText(getString(R.string.title_kaltoe));
+
+        // 파란 눈금 설정
+        ivBackgroundCircle.setImageResource(R.drawable.image_dot_circle_blue);
+
+        // TODO("퇴근시간 설정")
+        tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
+                "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
+
+//        roundProgressBar.setText(DateUtils.workingTime(calendar));
+        roundProgressBar.setTimeWithAnim(DateUtils.todayStartWorkingTime(Calendar.getInstance()), new Date(leavingWork.getLeavingTime()));
+    }
+
+    private void setNightWorkingResultUi(LeavingWork leavingWork) {
+        // title 설정
+        tvTitle.setText(getString(R.string.title_night_work));
+
+        // 파란 눈금 설정
+        ivBackgroundCircle.setImageResource(R.drawable.image_dot_circle_red);
+
+        // TODO("퇴근시간 설정")
+        tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
+                "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
+
+        roundProgressBar.setCricleProgressColor(ContextCompat.getColor(getContext(), R.color.round_red));
+//        roundProgressBar.setText(DateUtils.workingTime(calendar));
+        roundProgressBar.setTimeWithAnim(DateUtils.todayOffStartTime(), new Date(leavingWork.getLeavingTime()));
+    }
+
     private void setWaitUi(Calendar calendar) {
         // title 설정
         tvTitle.setText(String.format(getString(R.string.format_working),
@@ -201,14 +233,17 @@ public class TimerFragment extends Fragment {
                                     && AppPreferencesDataStore.getInstance().getStartWorkingHour() - calendar.get(Calendar.HOUR_OF_DAY) > 0) {
                                 setWaitUi(calendar);
                             } else {
-                                Toast.makeText(getContext(), "퇴근기록 보여줘야함", Toast.LENGTH_SHORT).show();
-                                // TODO("setResultUi();")
+                                if (leavingWork.isKaltoe()) {
+                                    setKaltoeResultUi(leavingWork);
+                                } else {
+                                    setNightWorkingResultUi(leavingWork);
+                                }
                             }
                         }
 
                         @Override
                         public void onDataNotAvailable() {
-                            if(calendar.getTime().before(DateUtils.todayStartWorkingTime(calendar))) {
+                            if (calendar.getTime().before(DateUtils.todayStartWorkingTime(calendar))) {
                                 // 지금 시간이 출근시간 전 -> 어제걸로 다시 조회
                                 Injection.provideLeavingWorkRepository().getLeavingWork(DateUtils.yesterday(calendar), new LeavingWorkDataSource.GetLeavingWorkCallback() {
                                     @Override
@@ -218,9 +253,12 @@ public class TimerFragment extends Fragment {
                                                 && AppPreferencesDataStore.getInstance().getStartWorkingHour() - calendar.get(Calendar.HOUR_OF_DAY) > 0) {
                                             setWaitUi(calendar);
                                         } else {
-                                            Toast.makeText(getContext(), "퇴근기록 보여줘야함", Toast.LENGTH_SHORT).show();
-                                            // TODO("setResultUi();")
                                             // 아니면 result
+                                            if (leavingWork.isKaltoe()) {
+                                                setKaltoeResultUi(leavingWork);
+                                            } else {
+                                                setNightWorkingResultUi(leavingWork);
+                                            }
                                         }
                                     }
 
