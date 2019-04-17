@@ -269,8 +269,13 @@ public class TimerFragment extends Fragment {
                                     }
                                 });
                             } else {
-                                // 출근시간 이후면 working
-                                setWorkingUi(calendar);
+                                // 퇴근시간 이후면 야근중
+                                if (calendar.getTime().after(DateUtils.todayOffStartTime())) {
+                                    setNightWorkingUi(calendar);
+                                } else {
+                                    // 아니면 근무중
+                                    setWorkingUi(calendar);
+                                }
                             }
                         }
                     });
