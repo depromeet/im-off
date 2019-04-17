@@ -30,9 +30,7 @@ public class LeavingWork {
         this.id = dateFormat.format(new Date(leavingTime));
         this.leavingTime = leavingTime;
 
-        this.isKaltoe =
-                (new Date(leavingTime).after(DateUtils.todayOffStartTime()))
-                        && (new Date(leavingTime).before(DateUtils.todayOffEndTime()));
+        this.isKaltoe = new Date(leavingTime).before(DateUtils.todayOffEndTime());
     }
 
     @NonNull
