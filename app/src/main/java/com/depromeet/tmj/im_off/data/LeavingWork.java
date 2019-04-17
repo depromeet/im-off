@@ -3,6 +3,7 @@ package com.depromeet.tmj.im_off.data;
 import com.depromeet.tmj.im_off.utils.DateUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -25,11 +26,17 @@ public class LeavingWork {
     @ColumnInfo(name = "iskaltoe")
     private boolean isKaltoe;
 
+    @ColumnInfo(name = "wokringtime")
+    private Long workingTime;
+
     public LeavingWork(@NonNull Long leavingTime) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
         this.id = dateFormat.format(new Date(leavingTime));
         this.leavingTime = leavingTime;
 
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(leavingTime);
+        this.workingTime = leavingTime - DateUtils.todayStartWorkingTime(calendar).getTime();
         this.isKaltoe = new Date(leavingTime).before(DateUtils.todayOffEndTime());
     }
 
@@ -57,5 +64,13 @@ public class LeavingWork {
 
     public void setKaltoe(boolean kaltoe) {
         isKaltoe = kaltoe;
+    }
+
+    public void setWorkingTime(Long workingTime) {
+        this.workingTime = workingTime;
+    }
+
+    public Long getWorkingTime() {
+        return workingTime;
     }
 }
