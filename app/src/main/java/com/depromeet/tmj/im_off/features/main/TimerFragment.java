@@ -1,10 +1,18 @@
 package com.depromeet.tmj.im_off.features.main;
 
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,16 +34,29 @@ import com.depromeet.tmj.im_off.utils.DateUtils;
 import com.depromeet.tmj.im_off.utils.Injection;
 import com.depromeet.tmj.im_off.utils.datastore.AppPreferencesDataStore;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class TimerFragment extends Fragment {
     private static final String TAG = "TimerFragment";
+    private static final int REQUEST_PERMISSIONS = 1;
+
     private AppPreferencesDataStore dataStore;
 
+    private ConstraintLayout root;
     private RoundProgressBar roundProgressBar;
     private ImageButton btnSetting;
     private ImageView ivBackgroundCircle;
@@ -44,6 +65,7 @@ public class TimerFragment extends Fragment {
     private TextView tvTitle;
     private TextView tvLeavingWork;
     private ImageView btnLeaving;
+    private TextView tvLeaving;
 
     public TimerFragment() {
     }
@@ -74,6 +96,7 @@ public class TimerFragment extends Fragment {
     }
 
     private void initBinding(View view) {
+        root = view.findViewById(R.id.root);
         tvTitle = view.findViewById(R.id.tv_title);
         roundProgressBar = view.findViewById(R.id.round_progress);
         btnSetting = view.findViewById(R.id.btn_setting);
@@ -81,6 +104,7 @@ public class TimerFragment extends Fragment {
         ivBackgroundCircle = view.findViewById(R.id.iv_bg_circle);
         tvLeavingWork = view.findViewById(R.id.tv_leaving_work_time);
         btnLeaving = view.findViewById(R.id.btn_leaving);
+        tvLeaving = view.findViewById(R.id.tv_leaving);
     }
 
     private void initUi() {
@@ -100,13 +124,7 @@ public class TimerFragment extends Fragment {
             startActivity(intent);
         });
 
-        tvStatistics.setOnClickListener(view -> {
-            scrollCallBack.onClickStatistics();
-        });
-
-        btnLeaving.setOnClickListener(view -> {
-            showLeavingDialog();
-        });
+        tvStatistics.setOnClickListener(view -> scrollCallBack.onClickStatistics());
     }
 
     private void setWeekendUi() {
@@ -137,22 +155,35 @@ public class TimerFragment extends Fragment {
 
 //        roundProgressBar.setText(DateUtils.workingTime(calendar));
         roundProgressBar.setTimeWithAnim(DateUtils.todayStartWorkingTime(Calendar.getInstance()), new Date(leavingWork.getLeavingTime()));
+
+        //버튼 설정
+        tvLeaving.setText("공유");
+        btnLeaving.setOnClickListener(view -> {
+            setShare();
+        });
     }
 
     private void setNightWorkingResultUi(LeavingWork leavingWork) {
         // title 설정
         tvTitle.setText(getString(R.string.title_night_work));
 
-        // 파란 눈금 설정
+        // 빨간 눈금 설정
         ivBackgroundCircle.setImageResource(R.drawable.image_dot_circle_red);
 
-        // TODO("퇴근시간 설정")
-        tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
-                "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
+        // 그래프 설정
+        SimpleDateFormat subtitleFormat = new SimpleDateFormat("a hh시 mm분 퇴근", Locale.KOREA);
+        tvLeavingWork.setText(subtitleFormat.format(leavingWork.getLeavingTime()));
 
+        SimpleDateFormat progressFormat = new SimpleDateFormat("hh:mm", Locale.KOREA);
+        roundProgressBar.setText(progressFormat.format(leavingWork.getLeavingTime()));
         roundProgressBar.setCricleProgressColor(ContextCompat.getColor(getContext(), R.color.round_red));
-//        roundProgressBar.setText(DateUtils.workingTime(calendar));
         roundProgressBar.setTimeWithAnim(DateUtils.todayOffStartTime(), new Date(leavingWork.getLeavingTime()));
+
+        //버튼 설정
+        tvLeaving.setText("공유");
+        btnLeaving.setOnClickListener(view -> {
+            setShare();
+        });
     }
 
     private void setWaitUi(Calendar calendar) {
@@ -168,6 +199,10 @@ public class TimerFragment extends Fragment {
                 "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
 
         roundProgressBar.setText(DateUtils.workingTime(calendar));
+
+        //버튼 설정
+        tvLeaving.setVisibility(View.INVISIBLE);
+        btnLeaving.setVisibility(View.INVISIBLE);
     }
 
     private void setWorkingUi(Calendar calendar) {
@@ -185,6 +220,10 @@ public class TimerFragment extends Fragment {
         // 그래프 설정
         roundProgressBar.setText(DateUtils.remainingTime(DateUtils.todayOffStartTime(), calendar.getTime()));
         roundProgressBar.setTimeWithAnim(DateUtils.todayStartWorkingTime(calendar), calendar.getTime());
+
+        //버튼 설정
+        tvLeaving.setText("퇴근");
+        btnLeaving.setOnClickListener(view -> showLeavingDialog());
     }
 
     private void setNightWorkingUi(Calendar calendar) {
@@ -201,6 +240,10 @@ public class TimerFragment extends Fragment {
         roundProgressBar.setCricleProgressColor(ContextCompat.getColor(getContext(), R.color.round_red));
         roundProgressBar.setText(DateUtils.nightWorkingTime());
         roundProgressBar.setTimeWithAnim(DateUtils.todayOffStartTime(), calendar.getTime());
+
+        //버튼 설정
+        tvLeaving.setText("퇴근");
+        btnLeaving.setOnClickListener(view -> showLeavingDialog());
     }
 
 
@@ -300,6 +343,107 @@ public class TimerFragment extends Fragment {
         LeavingWork leavingWork = new LeavingWork(DateUtils.nowTime());
         Injection.provideLeavingWorkRepository().saveLeavingWork(leavingWork, () ->
                 setCurrentState(DateUtils.nowCalendar()));
+    }
+
+    private void setShare() {
+        if (!hasWritePermissions()) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE,},
+                    REQUEST_PERMISSIONS);
+        } else {
+            Observable.just(0).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .onErrorResumeNext(throwable -> {
+                    })
+                    .subscribe(response -> {
+                        Uri uri = saveToPicture();
+                        if (uri != null) {
+                            String message = "나 이때 퇴근함!!";
+                            showChooser(message, uri);
+                        } else {
+                            Toast.makeText(getContext(), "공유 실패", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+    }
+
+    private boolean hasWritePermissions() {
+        int writeExternalPermission = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (writeExternalPermission == PackageManager.PERMISSION_DENIED) {
+            return false;
+        }
+        return true;
+    }
+
+    private Uri saveToPicture() {
+        if (!isExternalStorageWritable()) {
+            Toast.makeText(getContext(), "권한 없음", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+        long currentTime = System.currentTimeMillis();
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "im-off");
+        if (!file.exists()) {
+            if (!file.mkdirs()) {
+                return null;
+            }
+        }
+
+        String mimeType = "image/jpeg";
+        String fileName = currentTime + ".jpg";
+        String filePath = file.getAbsolutePath() + "/" + fileName;
+        Bitmap bitmap = getBitmap();
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(filePath);
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+
+            out.flush();
+            out.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        long size = new File(filePath).length();
+        ContentValues values = new ContentValues(8);
+        // store the details
+        values.put(MediaStore.Images.Media.TITLE, fileName);
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
+        values.put(MediaStore.Images.Media.DATE_ADDED, currentTime);
+        values.put(MediaStore.Images.Media.MIME_TYPE, mimeType);
+        values.put(MediaStore.Images.Media.DESCRIPTION, "퇴근요정");
+        values.put(MediaStore.Images.Media.ORIENTATION, 0);
+        values.put(MediaStore.Images.Media.DATA, filePath);
+        values.put(MediaStore.Images.Media.SIZE, size);
+
+        return getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+    }
+
+    private boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    private Bitmap getBitmap() {
+        Bitmap b = Bitmap.createBitmap(root.getWidth(), root.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(b);
+        root.draw(c);
+        return b;
+    }
+
+    private void showChooser(String message, Uri uri) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.putExtra(Intent.EXTRA_TEXT, message);
+        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
+            startActivity(Intent.createChooser(intent, "퇴근 기록 공유"));
+        } else {
+            Toast.makeText(getContext(), "공유 플랫폼 없음", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public static TimerFragment newInstance() {
