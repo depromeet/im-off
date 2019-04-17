@@ -33,11 +33,13 @@ public class RoundProgressBar extends View {
     private float roundWidth;
     private int keepRoundType;
     private String text;
+    private String textAMPM;
     private float startAngle;
     private float sweepAngle;
     public static final int KEEP = 1;
     private boolean textIsDisplayable;
     private boolean arcIsDisplayable = true;
+    private boolean isResult = false;
 
     public RoundProgressBar(Context context) {
         this(context, null);
@@ -106,7 +108,7 @@ public class RoundProgressBar extends View {
         paint.setColor(roundBackgroundColor);
         canvas.drawArc(oval, startAngle, sweepAngle, true, paint);  //According to the progress of an arc
 
-        if(arcIsDisplayable) {
+        if (arcIsDisplayable) {
             int innerDiff = DisplayUtils.dpToPixel(getContext(), 14);
             RectF innerOval = new RectF(centre - radius + innerDiff, centre - radius + innerDiff,
                     centre + radius - innerDiff, centre + radius - innerDiff);  //Used to define the shape and the size of the circular boundaries
@@ -125,6 +127,10 @@ public class RoundProgressBar extends View {
         if (textIsDisplayable) {
             float textWidth = paint.measureText(text);   //Measure the font width, we need according to the font width in the middle ring
             canvas.drawText(text, centre - textWidth / 2, centre + textSize / 2, paint); //Draw the percentage
+            if (isResult && textAMPM != null) {
+                paint.setTextSize(textSize / 2);
+                canvas.drawText(textAMPM, centre - textWidth / 2, centre - textSize / 2, paint);
+            }
         }
 
     }
@@ -186,6 +192,11 @@ public class RoundProgressBar extends View {
 
     public void setSweepAngle(float sweepAngle) {
         this.sweepAngle = sweepAngle;
+    }
+
+    public void setTextAMPM(String textAMPM) {
+        this.textAMPM = textAMPM;
+        isResult = true;
     }
 
     public void setArcIsDisplayable(boolean arcIsDisplayable) {

@@ -153,14 +153,20 @@ public class TimerFragment extends Fragment {
         tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
                 "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
 
-//        roundProgressBar.setText(DateUtils.workingTime(calendar));
+        // 그래프 설정
+        SimpleDateFormat subtitleFormat = new SimpleDateFormat("a hh시 mm분 퇴근", Locale.KOREA);
+        tvLeavingWork.setText(subtitleFormat.format(leavingWork.getLeavingTime()));
+
+        SimpleDateFormat progressFormat = new SimpleDateFormat("hh:mm", Locale.KOREA);
+        roundProgressBar.setText(progressFormat.format(leavingWork.getLeavingTime()));
+
+        SimpleDateFormat ampmFormat = new SimpleDateFormat("a", Locale.US);
+        roundProgressBar.setTextAMPM(ampmFormat.format(leavingWork.getLeavingTime()));
         roundProgressBar.setTimeWithAnim(DateUtils.todayStartWorkingTime(Calendar.getInstance()), new Date(leavingWork.getLeavingTime()));
 
         //버튼 설정
         tvLeaving.setText("공유");
-        btnLeaving.setOnClickListener(view -> {
-            setShare();
-        });
+        btnLeaving.setOnClickListener(view -> setShare());
     }
 
     private void setNightWorkingResultUi(LeavingWork leavingWork) {
@@ -176,14 +182,15 @@ public class TimerFragment extends Fragment {
 
         SimpleDateFormat progressFormat = new SimpleDateFormat("hh:mm", Locale.KOREA);
         roundProgressBar.setText(progressFormat.format(leavingWork.getLeavingTime()));
+
+        SimpleDateFormat ampmFormat = new SimpleDateFormat("a", Locale.US);
+        roundProgressBar.setTextAMPM(ampmFormat.format(leavingWork.getLeavingTime()));
         roundProgressBar.setCricleProgressColor(ContextCompat.getColor(getContext(), R.color.round_red));
         roundProgressBar.setTimeWithAnim(DateUtils.todayOffStartTime(), new Date(leavingWork.getLeavingTime()));
 
         //버튼 설정
         tvLeaving.setText("공유");
-        btnLeaving.setOnClickListener(view -> {
-            setShare();
-        });
+        btnLeaving.setOnClickListener(view -> setShare());
     }
 
     private void setWaitUi(Calendar calendar) {
