@@ -8,16 +8,18 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
+    private boolean isLeaving = false;
 
-    public ViewPagerAdapter(FragmentManager fm) {
+    public ViewPagerAdapter(FragmentManager fm, boolean isLeaving) {
         super(fm);
+        this.isLeaving = isLeaving;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return TimerFragment.newInstance();
+                return TimerFragment.newInstance(isLeaving);
             case 1:
                 return StatisticsFragment.newInstance();
             default:

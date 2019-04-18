@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -15,13 +17,15 @@ import com.depromeet.tmj.im_off.service.alarm.NotificationAlarmManager;
 import static com.depromeet.tmj.im_off.features.main.TimerFragment.REQUEST_PERMISSIONS;
 
 public class MainActivity extends AppCompatActivity implements TimerFragment.ScrollCallback {
-
+    private static final String EXTRA_IS_LEAVING = "EXTRA_IS_LEAVING";
     private VerticalViewPager viewPager;
+    private boolean isLeaving = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initArgs();
         initNoti();
         initBinding();
         initViewPager();
@@ -42,12 +46,16 @@ public class MainActivity extends AppCompatActivity implements TimerFragment.Scr
         }
     }
 
+    private void initArgs() {
+        this.isLeaving = getIntent().getBooleanExtra(EXTRA_IS_LEAVING, false);
+    }
+
     private void initBinding() {
         viewPager = findViewById(R.id.view_pager);
     }
 
     private void initViewPager() {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), isLeaving);
         viewPager.setAdapter(adapter);
     }
 
@@ -62,5 +70,12 @@ public class MainActivity extends AppCompatActivity implements TimerFragment.Scr
                 ((TimerFragment) fragment).setShare();
             }
         }
+    }
+
+    public static Intent getCallingIntent(Context context, boolean isLeaving) {
+        Intent intent = new Intent(context, MainActivity.class);
+
+        intent.putExtra(EXTRA_IS_LEAVING, isLeaving);
+        return intent;
     }
 }

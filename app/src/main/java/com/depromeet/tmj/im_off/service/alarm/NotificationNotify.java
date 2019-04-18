@@ -24,21 +24,28 @@ public class NotificationNotify {
 
     public void sendPush(NotificationType notificationType) {
         long notificationId = System.currentTimeMillis();
-        PendingIntent pendingIntent = createPendingIntent(notificationType, notificationId);
+        PendingIntent pendingIntent = createPendingIntent(notificationType);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         wakeUpDevice(notificationType.name());
         notificationManager.notify((int) notificationId,
                 createNotificationBuilder(notificationType, pendingIntent).build());
-
     }
 
-    private PendingIntent createPendingIntent(NotificationType notificationType, long notificationId) {
+    private PendingIntent createPendingIntent(NotificationType notificationType) {
         Intent intent = new Intent(context, MainActivity.class);
 
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return PendingIntent.getActivity(context, notificationType.ordinal(), intent, PendingIntent.FLAG_ONE_SHOT);
+    }
+
+    private PendingIntent createLeavingIntent(int requestCode) {
+        Intent intent = MainActivity.getCallingIntent(context, true);
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return PendingIntent.getActivity(context, requestCode, intent, PendingIntent.FLAG_ONE_SHOT);
     }
 
     private void wakeUpDevice(String tag) {
@@ -71,11 +78,14 @@ public class NotificationNotify {
             }
         }
 
+        PendingIntent actionIntent = createLeavingIntent(1);
+
         return new NotificationCompat.Builder(context, AppPreferencesDataStore.CHANNEL_NOTIFICATION)
                 .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentTitle(title)
+                .addAction(R.drawable.ic_launcher_background, "퇴근!", actionIntent)
                 .setContentText(message)
                 .setStyle(style)
                 .setColor(context.getResources().getColor(R.color.colorPrimary))

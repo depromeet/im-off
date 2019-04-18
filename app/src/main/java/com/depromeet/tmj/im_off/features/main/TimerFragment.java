@@ -48,6 +48,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -55,6 +56,7 @@ import io.reactivex.schedulers.Schedulers;
 public class TimerFragment extends Fragment {
     private static final String TAG = "TimerFragment";
     public static final int REQUEST_PERMISSIONS = 1;
+    private static final String EXTRA_IS_LEAVING = "EXTRA_IS_LEAVING";
 
     private AppPreferencesDataStore dataStore;
 
@@ -68,6 +70,7 @@ public class TimerFragment extends Fragment {
     private TextView tvLeavingWork;
     private ImageView btnLeaving;
     private TextView tvLeaving;
+    private boolean isLeaving = false;
 
     public TimerFragment() {
     }
@@ -86,6 +89,7 @@ public class TimerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dataStore = AppPreferencesDataStore.getInstance();
+        initArgs();
     }
 
     @Override
@@ -94,7 +98,17 @@ public class TimerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_timer, container, false);
         initBinding(view);
         initUi();
+        if (this.isLeaving) {
+            showLeavingDialog();
+        }
         return view;
+    }
+
+    private void initArgs() {
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            this.isLeaving = bundle.getBoolean(EXTRA_IS_LEAVING, false);
+        }
     }
 
     private void initBinding(View view) {
@@ -454,8 +468,17 @@ public class TimerFragment extends Fragment {
         }
     }
 
-    public static TimerFragment newInstance() {
-        return new TimerFragment();
+    public void tosat(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    public static TimerFragment newInstance(boolean isLeaving) {
+        TimerFragment fragment = new TimerFragment();
+        Bundle bundle = new Bundle();
+
+        bundle.putBoolean(EXTRA_IS_LEAVING, isLeaving);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     public interface ScrollCallback {
