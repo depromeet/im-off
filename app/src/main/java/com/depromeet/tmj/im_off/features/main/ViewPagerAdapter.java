@@ -1,6 +1,8 @@
 package com.depromeet.tmj.im_off.features.main;
 
 
+import com.depromeet.tmj.im_off.features.statistics.StatisticsFragment;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
