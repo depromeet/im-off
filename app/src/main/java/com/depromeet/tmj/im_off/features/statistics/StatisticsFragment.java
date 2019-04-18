@@ -1,4 +1,4 @@
-package com.depromeet.tmj.im_off.features.main;
+package com.depromeet.tmj.im_off.features.statistics;
 
 import android.os.Bundle;
 
