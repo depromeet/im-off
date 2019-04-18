@@ -56,7 +56,8 @@ public class NotificationAlarmManager {
             switch (notificationType) {
                 case LEAVING:
                     Calendar calendar = DateUtils.todayOffCalendar();
-                    calendar.add(Calendar.MINUTE, 10);
+//                    Calendar calendar = DateUtils.nowCalendar();
+//                    calendar.add(Calendar.SECOND, 5);
 
                     register(calendar, notificationType);
                     break;
