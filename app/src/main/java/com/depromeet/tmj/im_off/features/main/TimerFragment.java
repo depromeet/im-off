@@ -12,6 +12,7 @@ import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,7 @@ import com.depromeet.tmj.im_off.data.LeavingWork;
 import com.depromeet.tmj.im_off.data.source.LeavingWorkDataSource;
 import com.depromeet.tmj.im_off.shared.DayType;
 import com.depromeet.tmj.im_off.shared.RoundProgressBar;
+import com.depromeet.tmj.im_off.utils.AppExecutors;
 import com.depromeet.tmj.im_off.utils.DateUtils;
 import com.depromeet.tmj.im_off.utils.Injection;
 import com.depromeet.tmj.im_off.utils.datastore.AppPreferencesDataStore;
@@ -52,7 +54,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class TimerFragment extends Fragment {
     private static final String TAG = "TimerFragment";
-    private static final int REQUEST_PERMISSIONS = 1;
+    public static final int REQUEST_PERMISSIONS = 1;
 
     private AppPreferencesDataStore dataStore;
 
@@ -352,33 +354,33 @@ public class TimerFragment extends Fragment {
                 setCurrentState(DateUtils.nowCalendar()));
     }
 
-    private void setShare() {
-        if (!hasWritePermissions()) {
+    public void setShare() {
+        // 권한 확인
+        if (!hasWritePermissions() && (getActivity() != null)) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE,},
                     REQUEST_PERMISSIONS);
         } else {
-            Observable.just(0).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .onErrorResumeNext(throwable -> {
-                    })
-                    .subscribe(response -> {
-                        Uri uri = saveToPicture();
-                        if (uri != null) {
-                            String message = "나 이때 퇴근함!!";
-                            showChooser(message, uri);
-                        } else {
-                            Toast.makeText(getContext(), "공유 실패", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+            new Handler().post(() -> {
+                getActivity().runOnUiThread(() -> {
+                    Uri uri = saveToPicture();
+                    if (uri != null) {
+                        String message = "나 이때 퇴근함!!";
+                        showChooser(message, uri);
+                    } else {
+                        Toast.makeText(getContext(), "공유 실패", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            });
         }
     }
 
     private boolean hasWritePermissions() {
-        int writeExternalPermission = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (writeExternalPermission == PackageManager.PERMISSION_DENIED) {
-            return false;
+        if (getContext() != null) {
+            int writeExternalPermission =
+                    ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            return writeExternalPermission != PackageManager.PERMISSION_DENIED;
         }
-        return true;
+        throw new RuntimeException("getContext() is null");
     }
 
     private Uri saveToPicture() {
@@ -398,7 +400,7 @@ public class TimerFragment extends Fragment {
         String fileName = currentTime + ".jpg";
         String filePath = file.getAbsolutePath() + "/" + fileName;
         Bitmap bitmap = getBitmap();
-        FileOutputStream out = null;
+        FileOutputStream out;
         try {
             out = new FileOutputStream(filePath);
 
@@ -418,7 +420,7 @@ public class TimerFragment extends Fragment {
         values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
         values.put(MediaStore.Images.Media.DATE_ADDED, currentTime);
         values.put(MediaStore.Images.Media.MIME_TYPE, mimeType);
-        values.put(MediaStore.Images.Media.DESCRIPTION, "퇴근요정");
+        values.put(MediaStore.Images.Media.DESCRIPTION, getString(R.string.app_name));
         values.put(MediaStore.Images.Media.ORIENTATION, 0);
         values.put(MediaStore.Images.Media.DATA, filePath);
         values.put(MediaStore.Images.Media.SIZE, size);
@@ -428,15 +430,14 @@ public class TimerFragment extends Fragment {
 
     private boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        return false;
+
+        return Environment.MEDIA_MOUNTED.equals(state);
     }
 
     private Bitmap getBitmap() {
         Bitmap b = Bitmap.createBitmap(root.getWidth(), root.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(b);
+
         root.draw(c);
         return b;
     }

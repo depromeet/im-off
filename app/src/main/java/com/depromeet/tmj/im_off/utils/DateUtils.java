@@ -37,9 +37,11 @@ public class DateUtils {
     }
 
     public static String yesterday(Calendar calendar) {
-        calendar.add(Calendar.DAY_OF_MONTH, -1);
+        Calendar newCalendar = Calendar.getInstance();
+        newCalendar.setTimeInMillis(calendar.getTimeInMillis());
+        newCalendar.add(Calendar.DAY_OF_MONTH, -1);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-        return simpleDateFormat.format(calendar.getTime());
+        return simpleDateFormat.format(newCalendar.getTime());
     }
 
     public static String calendar2String(Calendar calendar) {
