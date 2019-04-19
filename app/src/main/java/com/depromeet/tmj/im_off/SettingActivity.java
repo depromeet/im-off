@@ -3,11 +3,14 @@ package com.depromeet.tmj.im_off;
 
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -28,154 +31,137 @@ public class SettingActivity extends BaseActivity
     private Button          _btn_cancel_selectJob;
     private int             _selectedJobIndex = -1;
 
+    // 출근 시간
+    public int             _time_goWork_hour;
+    public int             _time_goWork_minute;
+    // 퇴근 시간
+    public int             _time_offWork_hour;
+    public int             _time_offWork_minute;
+    // 칼퇴알람 On/Off 여부
+    public Boolean         _isOn_offWork_noti;
+
     /////////////////////////////// < Func > /////////////////////////////////
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
         // < 직군 추가는 여기에 >
-        final String[] values = {"경영.사무","마케팅.홍보", "기획", "영업.고객상담", "디자인"};
+        final String[] values = {"경영.사무", "마케팅.홍보", "IT.개발", "디자인", "기획", "무역.유통", "영업.고객상담",
+                "서비스", "연구개발.설계", "생산.제조", "교육", "의료", "법률"};
 
         // < 출근시간 입력버튼 >
         _btn_goWork = (Button) findViewById(R.id.btn_timepicker_am);
-        _btn_goWork.setOnClickListener(new Button.OnClickListener(){
-         @Override
-         public void onClick(View view)
-         {
-             TimePickerDialog dialog = new TimePickerDialog(SettingActivity.this, AlertDialog.THEME_HOLO_LIGHT,goWorktimeSetListener,15,60,false);
-             dialog.show();}
+        _btn_goWork.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerDialog dialog = new TimePickerDialog(SettingActivity.this, AlertDialog.THEME_HOLO_LIGHT, goWorktimeSetListener, 15, 60, false);
+                dialog.show();
+            }
         });
 
         // < 퇴근시간 입력버튼 >
         _btn_offWork = (Button) findViewById(R.id.btn_timepicker_pm);
-        _btn_offWork.setOnClickListener(new Button.OnClickListener(){
-            @Override
-            public void onClick(View view)
-            {
-                TimePickerDialog dialog = new TimePickerDialog(SettingActivity.this, AlertDialog.THEME_HOLO_LIGHT,offtimeSetListener,15,60,false);
-                dialog.show();}
-        });
-
-        // < 퇴근시간 입력버튼 >
-        _btn_offWork = (Button) findViewById(R.id.btn_timepicker_pm);
-        _btn_offWork.setOnClickListener(new Button.OnClickListener(){
-            @Override
-            public void onClick(View view)
-            {
-                TimePickerDialog dialog = new TimePickerDialog(SettingActivity.this, AlertDialog.THEME_HOLO_LIGHT,offtimeSetListener,15,60,false);
-                dialog.show();}
-        });
-
-
-        // -----------< 직군 선택 스크롤 >-------------
-
-        _btn_confirm_selectJob = (Button) findViewById(R.id.btn_confirm);
-        _btn_cancel_selectJob = (Button) findViewById(R.id.btn_cancel);
-        _view_showSelectedJob = (TextView) findViewById(R.id.tv_select_job);
-
-        _rayout_selectJob = (RelativeLayout) findViewById(R.id.rl);
-
-        _picker_selectJob = (NumberPicker) findViewById(R.id.np);
-        _picker_selectJob.setMinValue(0);
-        _picker_selectJob.setMaxValue(values.length -1);
-        _picker_selectJob.setDisplayedValues(values);
-        _picker_selectJob.setWrapSelectorWheel(true); // 휠 on/off
-
-        // 확인버튼 Listner
-        _btn_confirm_selectJob.setOnClickListener(new Button.OnClickListener(){
+        _btn_offWork.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(_selectedJobIndex == -1) {
-                    // Select 된적이 없는 경우
-                    _view_showSelectedJob.setText("직군을 선택해주세요");
-                }
-                else {
-                    _view_showSelectedJob.setText("직군 선택 : " + values[_selectedJobIndex]);
-                }
-                visibleBackgroundForPicker(Boolean.TRUE);
-                _rayout_selectJob.setVisibility(View.INVISIBLE);
+                TimePickerDialog dialog = new TimePickerDialog(SettingActivity.this, AlertDialog.THEME_HOLO_LIGHT, offtimeSetListener, 15, 60, false);
+                dialog.show();
             }
         });
 
-        // 취소버튼 Listner
-        _btn_cancel_selectJob.setOnClickListener(new Button.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                visibleBackgroundForPicker(Boolean.TRUE);
-                _rayout_selectJob.setVisibility(View.INVISIBLE);
-            }
-        });
-
-        // 직군선택 Listner
-        _picker_selectJob.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal){
-                _selectedJobIndex = newVal;
-            }
-        });
-        _rayout_selectJob.setVisibility(View.INVISIBLE);
-
-
-        //-------------------------------------------------
-
-        // < 직군 선택버튼 >
+        // < 직군선택 버튼 >
         _btn_selectJob = (Button) findViewById(R.id.btn_select_job);
-        _btn_selectJob.setOnClickListener(new Button.OnClickListener(){
+        _view_showSelectedJob = (TextView) findViewById(R.id.tv_select_job);
+        _btn_selectJob.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //visibleBackgroundForPicker(Boolean.FALSE);
-                _rayout_selectJob.setVisibility(View.VISIBLE);
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SettingActivity.this);
+
+                //제목
+                alertDialogBuilder.setTitle("☆ 직군 선택 ☆");
+                alertDialogBuilder.setItems(values,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // 직군이 선택되었을 때
+                                String showJob = "나의 직군 : ";
+                                showJob += values[which];
+                                _view_showSelectedJob.setText(showJob);
+                                dialog.dismiss();
+                            }
+                        });
+                //Dialog 생성
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                //다이얼로그 생성
+                alertDialog.show();
             }
         });
-    }
 
-    // 배경버튼 날리기
-    private void visibleBackgroundForPicker(Boolean isVisible)
-    {
-        if(isVisible)
-        {
-            _btn_goWork.setVisibility(View.VISIBLE);
-            _btn_offWork.setVisibility(View.VISIBLE);
-            _btn_selectJob.setVisibility(View.VISIBLE);
-            findViewById(R.id.tv_goto_work).setVisibility(View.VISIBLE);
-            findViewById(R.id.tv_get_off).setVisibility(View.VISIBLE);
-            findViewById(R.id.tv_title).setVisibility(View.VISIBLE);
-            findViewById(R.id.tv_am).setVisibility(View.VISIBLE);
-            findViewById(R.id.tv_pm).setVisibility(View.VISIBLE);
-            findViewById(R.id.tv_select_job).setVisibility(View.VISIBLE);
-            findViewById(R.id.tv_worktime).setVisibility(View.VISIBLE);
-        }
-        else {
-            _btn_goWork.setVisibility(View.INVISIBLE);
-            _btn_offWork.setVisibility(View.INVISIBLE);
-            _btn_selectJob.setVisibility(View.INVISIBLE);
-            findViewById(R.id.tv_goto_work).setVisibility(View.INVISIBLE);
-            findViewById(R.id.tv_get_off).setVisibility(View.INVISIBLE);
-            findViewById(R.id.tv_title).setVisibility(View.INVISIBLE);
-            findViewById(R.id.tv_am).setVisibility(View.INVISIBLE);
-            findViewById(R.id.tv_pm).setVisibility(View.INVISIBLE);
-            findViewById(R.id.tv_select_job).setVisibility(View.INVISIBLE);
-            findViewById(R.id.tv_worktime).setVisibility(View.INVISIBLE);
-        }
-    };
+        // < 칼퇴 알람 On/Off >
+        Switch sw = (Switch) findViewById(R.id.switch_OnNoti);
+        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                _isOn_offWork_noti = isChecked;
+            }
+        });
 
+    } //onCreate
+
+    // [ Call Back] Go Work Dialog
     private TimePickerDialog.OnTimeSetListener goWorktimeSetListener = new TimePickerDialog.OnTimeSetListener() {
 
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            String msg = String.format("%d : %d" , hourOfDay, minute);
-            _btn_goWork.setText(msg);
+            String showMsg = "";
+            _time_goWork_hour   = hourOfDay;
+            _time_goWork_minute = minute;
+
+            if( 12 < hourOfDay )
+            {
+                showMsg += "오후 ";
+                showMsg += String.format("%d : %d" , hourOfDay - 12, minute);
+            }
+            else
+            {
+                showMsg += "오전 ";
+                showMsg += String.format("%d : %d" , hourOfDay, minute);
+            }
+            // 0이 하나만 나오는 경우 방지
+            if ( 0 == minute )
+            {
+                showMsg += "0";
+            }
+            _btn_goWork.setText(showMsg);
         }
     };
 
+    // [ Call Back] Off Work Dialog
     private TimePickerDialog.OnTimeSetListener offtimeSetListener = new TimePickerDialog.OnTimeSetListener() {
 
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            String msg = String.format("%d : %d" , hourOfDay, minute);
-            _btn_offWork.setText(msg);
+            String showMsg = "";
+            _time_offWork_hour   = hourOfDay;
+            _time_offWork_minute = minute;
+
+            if( 12 < hourOfDay )
+            {
+                showMsg += "오후 ";
+                showMsg += String.format("%d : %d" , hourOfDay - 12, minute);
+            }
+            else
+            {
+                showMsg += "오전 ";
+                showMsg += String.format("%d : %d" , hourOfDay, minute);
+            }
+            // 0이 하나만 나오는 경우 방지
+            if ( 0 == minute )
+            {
+                showMsg += "0";
+            }
+            _btn_offWork.setText(showMsg);
         }
     };
 }
