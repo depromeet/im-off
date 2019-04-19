@@ -32,7 +32,7 @@
         android:fontFamily="@font/jalnan"
         android:text="34시간"
         android:textColor="@color/colorText"
-        android:textSize="32sp"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="@id/tv_title"
         app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
@@ -44,17 +44,17 @@
         android:fontFamily="@font/jalnan"
         android:text="/52시간"
         android:textColor="@color/colorText"
-        android:textSize="16sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@id/tv_contents_main"
         app:layout_constraintStart_toEndOf="@id/tv_contents_main" />
 
     <com.depromeet.tmj.im_off.shared.RoundProgressBar
         android:id="@+id/progress"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="80dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_contents_main"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_title"
         app:textIsDisplayable="false" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

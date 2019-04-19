@@ -152,6 +152,17 @@ public class RoundProgressBar extends View {
         requestLayout();
     }
 
+    public void setWorkingTimeWithAnim(int workingTime) {
+        startAngle = 270;
+        sweepAngle = (float) workingTime / 52 * 360;
+
+        ArcAngleAnimation animation = new ArcAngleAnimation(this, sweepAngle);
+
+        animation.setDuration(2000);
+        startAnimation(animation);
+        requestLayout();
+    }
+
     public void setCricleColor(int cricleColor) {
         this.roundColor = cricleColor;
     }
