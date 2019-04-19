@@ -24,4 +24,8 @@
 
     <!-- 통계 화면 -->
     <string name="title_statistics">내 칼퇴 기록</string>
+    <string name="title_working_time">이번주 근무 시간</string>
+    <string name="title_leaving_time">평균 퇴근 시간</string>
+    <string name="title_kaltoe_day">주로 칼퇴하는 요일</string>
+    <string name="title_night_working_day">주로 야근하는 요일</string>
 </resources>
