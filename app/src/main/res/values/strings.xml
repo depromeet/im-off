@@ -20,4 +20,8 @@
     <string name="leaving">퇴근</string>
     <string name="title_kaltoe">축하합니다.\n칼퇴하셨군요.</string>
     <string name="title_night_work">야근하셨군요..\n내일은 꼭 칼퇴를!</string>
+
+
+    <!-- 통계 화면 -->
+    <string name="title_statistics">내 칼퇴 기록</string>
 </resources>
