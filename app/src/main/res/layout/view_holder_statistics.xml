@@ -8,11 +8,11 @@
     android:layout_marginEnd="10dp"
     android:background="@drawable/shape_rect_white_5r"
     android:clipToPadding="true"
-    android:elevation="3dp"
+    android:elevation="2dp"
     android:paddingStart="20dp"
-    android:paddingTop="12dp"
+    android:paddingTop="8dp"
     android:paddingEnd="23dp"
-    android:paddingBottom="30dp">
+    android:paddingBottom="20dp">
 
     <TextView
         android:id="@+id/tv_title"
@@ -50,8 +50,8 @@
 
     <com.depromeet.tmj.im_off.shared.RoundProgressBar
         android:id="@+id/progress"
-        android:layout_width="74dp"
-        android:layout_height="74dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
