@@ -9,4 +9,6 @@
     <color name="round_blue">#25f2ff</color>
     <color name="round_red">#ff295b</color>
     <color name="round_leaving">#3a2eff</color>
+    <color name="bg_statistics">#f7f7f7</color>
+    <color name="statistics_title">#de191919</color>
 </resources>
