@@ -31,7 +31,6 @@ import com.depromeet.tmj.im_off.data.LeavingWork;
 import com.depromeet.tmj.im_off.data.source.LeavingWorkDataSource;
 import com.depromeet.tmj.im_off.shared.DayType;
 import com.depromeet.tmj.im_off.shared.RoundProgressBar;
-import com.depromeet.tmj.im_off.utils.AppExecutors;
 import com.depromeet.tmj.im_off.utils.DateUtils;
 import com.depromeet.tmj.im_off.utils.Injection;
 import com.depromeet.tmj.im_off.utils.datastore.AppPreferencesDataStore;
@@ -43,15 +42,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import org.jetbrains.annotations.NotNull;
 
 public class TimerFragment extends Fragment {
     private static final String TAG = "TimerFragment";
@@ -93,7 +91,7 @@ public class TimerFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_timer, container, false);
         initBinding(view);
@@ -201,7 +199,9 @@ public class TimerFragment extends Fragment {
 
         SimpleDateFormat ampmFormat = new SimpleDateFormat("a", Locale.US);
         roundProgressBar.setTextAMPM(ampmFormat.format(leavingWork.getLeavingTime()));
-        roundProgressBar.setCricleProgressColor(ContextCompat.getColor(getContext(), R.color.round_red));
+        if(getContext() != null) {
+            roundProgressBar.setCricleProgressColor(ContextCompat.getColor(getContext(), R.color.round_red));
+        }
         roundProgressBar.setTimeWithAnim(DateUtils.todayOffStartTime(), new Date(leavingWork.getLeavingTime()));
 
         //버튼 설정
@@ -260,7 +260,9 @@ public class TimerFragment extends Fragment {
         tvLeavingWork.setText(DateUtils.nightWorkingTimeTitle());
 
         // 그래프 설정
-        roundProgressBar.setCricleProgressColor(ContextCompat.getColor(getContext(), R.color.round_red));
+        if(getContext() != null) {
+            roundProgressBar.setCricleProgressColor(ContextCompat.getColor(getContext(), R.color.round_red));
+        }
         roundProgressBar.setText(DateUtils.nightWorkingTime());
         roundProgressBar.setTimeWithAnim(DateUtils.todayOffStartTime(), calendar.getTime());
 
@@ -284,10 +286,9 @@ public class TimerFragment extends Fragment {
      * - 퇴근시간 안지났으면 파란색 STATE_WORKING
      * - 퇴근시간 지났으면 빨간색 STATE_NIGHT_WORKING
      *
-     * @return
      */
     private void setCurrentState(Calendar calendar) {
-        if (calendar.get(Calendar.DAY_OF_WEEK) == 1 || calendar.get(Calendar.DAY_OF_WEEK) == 7) {
+        if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
             setWeekendUi();
         } else {
 
@@ -357,9 +358,7 @@ public class TimerFragment extends Fragment {
                     Toast.makeText(getContext(), "퇴근!!", Toast.LENGTH_SHORT).show();
                     leaving();
                 })
-                .setNegativeButton("야근..ㅠ", (anInterface, i) -> {
-                    anInterface.dismiss();
-                }).show();
+                .setNegativeButton("야근..ㅠ", (anInterface, i) -> anInterface.dismiss()).show();
     }
 
     private void leaving() {
@@ -375,15 +374,17 @@ public class TimerFragment extends Fragment {
                     REQUEST_PERMISSIONS);
         } else {
             new Handler().post(() -> {
-                getActivity().runOnUiThread(() -> {
-                    Uri uri = saveToPicture();
-                    if (uri != null) {
-                        String message = "나 이때 퇴근함!!";
-                        showChooser(message, uri);
-                    } else {
-                        Toast.makeText(getContext(), "공유 실패", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                if(getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        Uri uri = saveToPicture();
+                        if (uri != null) {
+                            String message = "나 이때 퇴근함!!";
+                            showChooser(message, uri);
+                        } else {
+                            Toast.makeText(getContext(), "공유 실패", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             });
         }
     }
@@ -439,7 +440,7 @@ public class TimerFragment extends Fragment {
         values.put(MediaStore.Images.Media.DATA, filePath);
         values.put(MediaStore.Images.Media.SIZE, size);
 
-        return getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        return Objects.requireNonNull(getActivity()).getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
     }
 
     private boolean isExternalStorageWritable() {
@@ -461,15 +462,11 @@ public class TimerFragment extends Fragment {
         intent.setType("image/*");
         intent.putExtra(Intent.EXTRA_STREAM, uri);
         intent.putExtra(Intent.EXTRA_TEXT, message);
-        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
+        if (intent.resolveActivity(Objects.requireNonNull(getContext()).getPackageManager()) != null) {
             startActivity(Intent.createChooser(intent, "퇴근 기록 공유"));
         } else {
             Toast.makeText(getContext(), "공유 플랫폼 없음", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public void tosat(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     public static TimerFragment newInstance(boolean isLeaving) {
