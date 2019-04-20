@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import com.depromeet.tmj.im_off.features.main.TimerFragment;
 import com.depromeet.tmj.im_off.features.main.VerticalViewPager;
@@ -58,6 +59,28 @@ public class MainActivity extends AppCompatActivity implements TimerFragment.Scr
     private void initViewPager() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), isLeaving);
         viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position == 0) {
+                    getWindow().setStatusBarColor(getResources()
+                            .getColor(R.color.white, getTheme()));
+                } else {
+                    getWindow().setStatusBarColor(getResources()
+                            .getColor(R.color.bg_statistics, getTheme()));
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void initNoti() {
