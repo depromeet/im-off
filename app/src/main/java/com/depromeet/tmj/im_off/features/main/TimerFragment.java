@@ -154,6 +154,9 @@ public class TimerFragment extends Fragment {
                 "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
 
         roundProgressBar.setArcIsDisplayable(false);
+
+        btnLeaving.setVisibility(View.INVISIBLE);
+        tvLeavingWork.setVisibility(View.INVISIBLE);
     }
 
     private void setKaltoeResultUi(LeavingWork leavingWork) {
