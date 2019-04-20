@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
@@ -18,10 +19,13 @@ import com.depromeet.tmj.im_off.shared.BaseActivity;
 
 public class SettingActivity extends BaseActivity
 {
-    /////////////////////////////// < Value > /////////////////////////////////
-    private Button          _btn_goWork;                //출근시간 설정버튼
-    private Button          _btn_offWork;               //퇴근시간 설정버튼
-    private Button          _btn_selectJob;             //직업 선택버튼
+//    private Button          _btn_goWork;                //출근시간 설정버튼
+//    private Button          _btn_offWork;               //퇴근시간 설정버튼
+//    private Button          _btn_selectJob;             //직업 선택버튼
+/////////////////////////////// < Value > /////////////////////////////////
+    private LinearLayout    _layout_goWork;             //출근시간 설정버튼
+    private LinearLayout    _layout_offWork;             //퇴근시간 설정버튼
+    private LinearLayout    _layout_selectJob;             //직업 선택버튼
     private TextView        _view_showSelectedJob;      //선택된 직업 보여주는 곳
     //  직업선택 스크롤 픽커
     private RelativeLayout  _rayout_selectJob;
@@ -51,43 +55,42 @@ public class SettingActivity extends BaseActivity
                 "서비스", "연구개발.설계", "생산.제조", "교육", "의료", "법률"};
 
         // < 출근시간 입력버튼 >
-        _btn_goWork = (Button) findViewById(R.id.btn_timepicker_am);
-        _btn_goWork.setOnClickListener(new Button.OnClickListener() {
+        _layout_goWork = (LinearLayout) findViewById(R.id.layout_goWork) ;
+        _layout_goWork.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TimePickerDialog dialog = new TimePickerDialog(SettingActivity.this, AlertDialog.THEME_HOLO_LIGHT, goWorktimeSetListener, 15, 60, false);
+                TimePickerDialog dialog = new TimePickerDialog(SettingActivity.this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, goWorktimeSetListener, 15, 60, false);
                 dialog.show();
+                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             }
         });
 
         // < 퇴근시간 입력버튼 >
-        _btn_offWork = (Button) findViewById(R.id.btn_timepicker_pm);
-        _btn_offWork.setOnClickListener(new Button.OnClickListener() {
+        _layout_offWork = (LinearLayout) findViewById(R.id.layout_offWork) ;
+        _layout_offWork.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TimePickerDialog dialog = new TimePickerDialog(SettingActivity.this, AlertDialog.THEME_HOLO_LIGHT, offtimeSetListener, 15, 60, false);
+                TimePickerDialog dialog = new TimePickerDialog(SettingActivity.this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, offtimeSetListener, 15, 60, false);
                 dialog.show();
+                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             }
         });
 
         // < 직군선택 버튼 >
-        _btn_selectJob = (Button) findViewById(R.id.btn_select_job);
-        _view_showSelectedJob = (TextView) findViewById(R.id.tv_select_job);
-        _btn_selectJob.setOnClickListener(new Button.OnClickListener() {
+         _layout_selectJob = (LinearLayout) findViewById(R.id.layout_select_job);
+         _layout_selectJob.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SettingActivity.this);
 
                 //제목
-                alertDialogBuilder.setTitle("☆ 직군 선택 ☆");
                 alertDialogBuilder.setItems(values,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // 직군이 선택되었을 때
-                                String showJob = "나의 직군 : ";
-                                showJob += values[which];
-                                _view_showSelectedJob.setText(showJob);
+                                TextView view = (TextView) findViewById(R.id.tv_select_job);
+                                view.setText(values[which]);
                                 dialog.dismiss();
                             }
                         });
@@ -133,7 +136,8 @@ public class SettingActivity extends BaseActivity
             {
                 showMsg += "0";
             }
-            _btn_goWork.setText(showMsg);
+            TextView tv = (TextView) findViewById(R.id.tv_goWork);
+            tv.setText(showMsg);
         }
     };
 
@@ -161,7 +165,8 @@ public class SettingActivity extends BaseActivity
             {
                 showMsg += "0";
             }
-            _btn_offWork.setText(showMsg);
+            TextView tv = (TextView) findViewById(R.id.tv_offWork);
+            tv.setText(showMsg);
         }
     };
 }
