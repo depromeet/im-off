@@ -14,14 +14,14 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class KaltoeDayViewHolder extends RecyclerView.ViewHolder {
+public class NightWorkingViewHolder extends RecyclerView.ViewHolder {
     private Context context;
     private TextView tvTitle;
     private TextView tvDay;
     private TextView tvSub;
     private RoundProgressBar progressBar;
 
-    public KaltoeDayViewHolder(@NonNull View view) {
+    public NightWorkingViewHolder(@NonNull View view) {
         super(view);
         context = view.getContext();
         tvTitle = view.findViewById(R.id.tv_title);
@@ -31,8 +31,8 @@ public class KaltoeDayViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(int day) {
-        tvTitle.setText("주로 칼퇴하는 요일");
-        progressBar.setCricleProgressColor(ContextCompat.getColor(context, R.color.round_blue));
+        tvTitle.setText("주로 야근하는 요일");
+        progressBar.setCricleProgressColor(ContextCompat.getColor(context, R.color.round_red));
         progressBar.setTextColor(ContextCompat.getColor(context, R.color.white));
         switch (day) {
             case Calendar.MONDAY:
