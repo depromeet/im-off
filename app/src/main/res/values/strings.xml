@@ -1,3 +1,31 @@
 <resources>
-    <string name="app_name">im-off</string>
+    <string name="app_name">칼퇴요정</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="noti_title">노티 제목</string>
+    <string name="noti_message">노티 내용</string>
+    
+    <!-- 타이머 화면 -->
+    <string name="format_working">피곤한 %s\n오늘 꼭 칼퇴하세요.</string>
+    <string name="format_leaving_work_time">%s %02d:%02d 퇴근</string>
+    <string name="show_statistics">내 칼퇴 기록 보기</string>
+    <string name="mon">월요일</string>
+    <string name="tue">화요일</string>
+    <string name="wed">수요일</string>
+    <string name="thu">목요일</string>
+    <string name="fri">금요일</string>
+    <string name="sat">토요일</string>
+    <string name="sun">일요일</string>
+    <string name="format_night_working">야근중입니다.\n어서 퇴근하세요!</string>
+    <string name="leaving">퇴근</string>
+    <string name="title_kaltoe">축하합니다.\n칼퇴하셨군요.</string>
+    <string name="title_night_work">야근하셨군요..\n내일은 꼭 칼퇴를!</string>
+
+
+    <!-- 통계 화면 -->
+    <string name="title_statistics">내 칼퇴 기록</string>
+    <string name="title_working_time">이번주 근무 시간</string>
+    <string name="title_leaving_time">평균 퇴근 시간</string>
+    <string name="title_kaltoe_day">주로 칼퇴하는 요일</string>
+    <string name="title_night_working_day">주로 야근하는 요일</string>
 </resources>
