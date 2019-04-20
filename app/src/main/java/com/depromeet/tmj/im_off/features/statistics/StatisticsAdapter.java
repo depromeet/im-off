@@ -32,7 +32,7 @@ public class StatisticsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             case TYPE_LEAVING_TIME:
                 return new LeavingTimeViewHolder(view);
             case TYPE_KALTOE_DAY:
-                return new WorkingTimeViewHolder(view);
+                return new KaltoeDayViewHolder(view);
             case TYPE_NIGHT_WORKING_DAY:
                 return new WorkingTimeViewHolder(view);
         }
@@ -45,6 +45,8 @@ public class StatisticsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             ((WorkingTimeViewHolder) holder).bind(20);
         } else if (holder instanceof LeavingTimeViewHolder) {
             ((LeavingTimeViewHolder) holder).bind(new Date());
+        } else if (holder instanceof KaltoeDayViewHolder) {
+            ((KaltoeDayViewHolder) holder).bind(1);
         }
     }
 

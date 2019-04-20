@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
@@ -40,6 +41,7 @@ public class RoundProgressBar extends View {
     private boolean textIsDisplayable;
     private boolean arcIsDisplayable = true;
     private boolean isResult = false;
+    private Typeface font;
 
     public RoundProgressBar(Context context) {
         this(context, null);
@@ -122,7 +124,10 @@ public class RoundProgressBar extends View {
         paint.setStrokeWidth(0);
         paint.setColor(textColor);
         paint.setTextSize(textSize);
-        paint.setTypeface(ResourcesCompat.getFont(getContext(), R.font.jalnan)); //Set the font
+        if(font == null) {
+            font = ResourcesCompat.getFont(getContext(), R.font.jalnan);
+        }
+        paint.setTypeface(font); //Set the font
 
         if (textIsDisplayable) {
             float textWidth = paint.measureText(text);   //Measure the font width, we need according to the font width in the middle ring
@@ -210,8 +215,16 @@ public class RoundProgressBar extends View {
         isResult = true;
     }
 
+    public void setTextIsDisplayable(boolean textIsDisplayable) {
+        this.textIsDisplayable = textIsDisplayable;
+    }
+
     public void setArcIsDisplayable(boolean arcIsDisplayable) {
         this.arcIsDisplayable = arcIsDisplayable;
+    }
+
+    public void setFont(Typeface font) {
+        this.font = font;
     }
 
     private class ArcAngleAnimation extends Animation {
