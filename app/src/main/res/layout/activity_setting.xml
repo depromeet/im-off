@@ -1,22 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".SettingActivity">
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_select_time"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="48dp"
+        android:fontFamily="@font/spoqaregular"
+        android:text="출퇴근 시간을 설정해주세요."
+        android:textColor="#191919"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 출근 -->
+    <Button
+        android:id="@+id/btn_timepicker_am"
+        android:layout_width="186dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="90dp"
+        android:fontFamily="@font/spoqaregular"
+        android:textColor="#191919"
+        android:text="출근시간"
+        android:textSize="22sp"
+        android:background="#f3f3f3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!--퇴근-->
+    <Button
+        android:id="@+id/btn_timepicker_pm"
+        android:layout_width="186dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="140dp"
+        android:fontFamily="@font/spoqaregular"
+        android:textColor="#191919"
+        android:text="퇴근시간"
+        android:textSize="22sp"
+        android:background="#f3f3f3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_select_job"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="235dp"
+        android:fontFamily="@font/spoqaregular"
+        android:text="직군을 선택해주세요."
+        android:textColor="#191919"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!-- 직군선택 버튼 -->
+    <Button
+        android:id="@+id/btn_select_job"
+        android:layout_width="163dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="277dp"
+        android:fontFamily="@font/spoqaregular"
+        android:textColor="#191919"
+        android:text="나의 직군"
+        android:textSize="22sp"
+        android:background="#f3f3f3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/tv_confirm_earlyoff"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="381dp"
+        android:fontFamily="@font/spoqaregular"
+        android:text="칼퇴 확인 알림"
+        android:textSize="18sp"
+        android:textColor="#191919"
+        android:lineSpacingExtra="28sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Switch
+        android:id="@+id/switch_OnNoti"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:switchMinWidth="56dp"
+        android:layout_marginStart="165dp"
+        android:layout_marginTop="384dp"
+        android:checked="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="65dp"
-        android:layout_marginStart="30dp"
-        android:textSize="22sp"
-        android:fontFamily="@font/spoqa-regular"
-        android:textColor="@color/text_normal"
-        android:text="출퇴근 시간을 설정해주세요."/>
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/tv_push_noti"
+        android:layout_width="270dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="427dp"
+        android:fontFamily="@font/spoqaregular"
+        android:lineSpacingExtra="7sp"
+        android:text="퇴근시간 후 30분 간격의 퇴근확인\n 푸시알림이 발생합니다."
+        android:textColor="#191919"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/freeset5"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginBottom="28dp"
+        android:layout_marginEnd="28dp"
+        android:background="@drawable/round_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="확인"
+        android:textColor="#ffffff"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!-- 직군선택 picker  사이즈 수정필요-->
+    <!--<RelativeLayout-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--android:id="@+id/rl"-->
+    <!--android:layout_marginStart="40dp"-->
+    <!--android:layout_marginTop="169dp"-->
+    <!--android:layout_width="304dp"-->
+    <!--android:layout_height="404dp"-->
+    <!--android:padding="16dp"-->
+    <!--tools:context=".MainActivity"-->
+    <!--android:background="#ffffff"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toTopOf="parent">-->
+
+    <!--<NumberPicker-->
+    <!--android:id="@+id/np"-->
+    <!--android:layout_width="304dp"-->
+    <!--android:layout_height="103dp"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_marginBottom="285dp"-->
+    <!--android:textSize="20dp" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/btn_confirm"-->
+    <!--android:layout_width="32dp"-->
+    <!--android:layout_height="80dp"-->
+    <!--android:layout_marginStart="162dp"-->
+    <!--android:layout_marginTop="255dp"-->
+    <!--android:background="#FFFFFF"-->
+    <!--android:text="확 인"-->
+    <!--android:textColor="@color/text_normal"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/btn_cancel"-->
+    <!--android:layout_width="32dp"-->
+    <!--android:layout_height="80dp"-->
+    <!--android:layout_marginStart="237dp"-->
+    <!--android:layout_marginTop="255dp"-->
+    <!--android:background="#FFFFFF"-->
+    <!--android:text="취 소"-->
+    <!--android:textColor="@color/text_normal"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toTopOf="parent" />-->
+    <!--</RelativeLayout>-->
 </androidx.constraintlayout.widget.ConstraintLayout>
