@@ -55,13 +55,9 @@ public class KaltoeDayViewHolder extends RecyclerView.ViewHolder {
                 tvDay.setText("금요일");
                 progressBar.setText("Fri");
                 break;
-            case Calendar.SATURDAY:
-                tvDay.setText("토요일");
-                progressBar.setText("Sat");
-                break;
-            case Calendar.SUNDAY:
-                tvDay.setText("일요일");
-                progressBar.setText("Sun");
+            default:
+                tvDay.setText("월요일");
+                progressBar.setText("Mon");
                 break;
         }
 

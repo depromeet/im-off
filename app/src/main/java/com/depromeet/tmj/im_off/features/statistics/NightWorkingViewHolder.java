@@ -55,14 +55,11 @@ public class NightWorkingViewHolder extends RecyclerView.ViewHolder {
                 tvDay.setText("금요일");
                 progressBar.setText("Fri");
                 break;
-            case Calendar.SATURDAY:
-                tvDay.setText("토요일");
-                progressBar.setText("Sat");
+            default:
+                tvDay.setText("월요일");
+                progressBar.setText("Mon");
                 break;
-            case Calendar.SUNDAY:
-                tvDay.setText("일요일");
-                progressBar.setText("Sun");
-                break;
+
         }
 
         tvSub.setVisibility(View.INVISIBLE);

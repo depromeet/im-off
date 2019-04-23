@@ -32,14 +32,14 @@ public class LeavingTimeViewHolder extends RecyclerView.ViewHolder {
         pbLeavingTime = view.findViewById(R.id.progress);
     }
 
-    public void bind(Date LeavingTime) {
+    public void bind(Date leavingTime) {
         SimpleDateFormat format = new SimpleDateFormat("hh시 mm분", Locale.KOREA);
 
         tvTitle.setText("평균 퇴근 시간");
-        tvAvgTime.setText("06시 24분");
+        tvAvgTime.setText(format.format(leavingTime));
         tvLeavingTime.setText("/" + format.format(DateUtils.todayOffStartTime()));
 
         pbLeavingTime.setCricleProgressColor(ContextCompat.getColor(context, R.color.round_leaving));
-        pbLeavingTime.setWorkingTimeWithAnim(90);
+        pbLeavingTime.setTimeWithAnim(DateUtils.todayStartWorkingTime(DateUtils.nowCalendar()), leavingTime);
     }
 }

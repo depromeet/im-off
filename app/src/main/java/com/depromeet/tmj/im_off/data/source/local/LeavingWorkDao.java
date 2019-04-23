@@ -22,6 +22,9 @@ public interface LeavingWorkDao {
     @Query("SELECT count(*) FROM leavingworks WHERE iskaltoe = 1")
     int getKaltoeCount();
 
+    @Query("SELECT * FROM leavingworks WHERE leavingtime >= :date")
+    List<LeavingWork> getAfterLeavingWorks(Long date);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertLeavingWork(LeavingWork leavingWork);
 

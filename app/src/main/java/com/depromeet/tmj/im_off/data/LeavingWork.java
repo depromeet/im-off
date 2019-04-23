@@ -29,6 +29,9 @@ public class LeavingWork {
     @ColumnInfo(name = "wokringtime")
     private Long workingTime;
 
+    @ColumnInfo(name = "dayofweek")
+    private int dayOfWeek;
+
     public LeavingWork(@NonNull Long leavingTime) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
         this.id = dateFormat.format(new Date(leavingTime));
@@ -36,8 +39,11 @@ public class LeavingWork {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(leavingTime);
-        this.workingTime = leavingTime - DateUtils.todayStartWorkingTime(calendar).getTime();
+        this.workingTime = leavingTime
+                - DateUtils.todayStartWorkingTime(calendar).getTime()
+                - 1000 * 60 * 60;
         this.isKaltoe = new Date(leavingTime).before(DateUtils.todayOffEndTime());
+        this.dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
     }
 
     @NonNull
@@ -72,5 +78,13 @@ public class LeavingWork {
 
     public Long getWorkingTime() {
         return workingTime;
+    }
+
+    public int getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    public void setDayOfWeek(int dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 }
