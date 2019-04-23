@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +21,7 @@ public class StatisticsFragment extends Fragment {
     private static final String TAG = "Statistics";
 
     private RecyclerView rvStatistics;
+    private TextView tvNoData;
 
     public StatisticsFragment() {
     }
@@ -54,6 +55,7 @@ public class StatisticsFragment extends Fragment {
 
     private void initBinding(View view) {
         rvStatistics = view.findViewById(R.id.rv_statistics);
+        tvNoData = view.findViewById(R.id.tv_no_data);
     }
 
     private void initUi() {
@@ -64,6 +66,8 @@ public class StatisticsFragment extends Fragment {
         Injection.provideLeavingWorkRepository().getLeavingWorks(new LeavingWorkDataSource.LoadLeavingWorkCallaack() {
             @Override
             public void onDataLoaded(List<LeavingWork> leavingWorks) {
+                tvNoData.setVisibility(View.GONE);
+                rvStatistics.setVisibility(View.VISIBLE);
                 if (rvStatistics != null) {
                     rvStatistics.setAdapter(new StatisticsAdapter(leavingWorks));
                     rvStatistics.scheduleLayoutAnimation();
@@ -72,8 +76,8 @@ public class StatisticsFragment extends Fragment {
 
             @Override
             public void onDataNotAvailable() {
-                // TODO("통계 데이터 없을때 화면 설정 필요")
-                Toast.makeText(getContext(), "통계 데이터 없음", Toast.LENGTH_SHORT).show();
+                tvNoData.setVisibility(View.VISIBLE);
+                rvStatistics.setVisibility(View.INVISIBLE);
             }
         });
     }
