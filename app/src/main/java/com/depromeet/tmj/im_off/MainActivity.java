@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements TimerFragment.Scr
 
     @Override
     public void onClickStatistics() {
-        viewPager.setCurrentItem(1, true);
+        viewPager.setCurrentItem(1);
     }
 
     @Override
@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements TimerFragment.Scr
 
             }
         });
+        viewPager.setScrollDurationFactor(2);
     }
 
     private void initNoti() {
