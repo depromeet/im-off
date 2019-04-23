@@ -68,4 +68,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
 
+    // Lottie
+    implementation 'com.airbnb.android:lottie:3.0.0'
+
 }
