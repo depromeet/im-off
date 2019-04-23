@@ -32,7 +32,6 @@ import com.depromeet.tmj.im_off.R;
 import com.depromeet.tmj.im_off.SettingActivity;
 import com.depromeet.tmj.im_off.data.LeavingWork;
 import com.depromeet.tmj.im_off.data.source.LeavingWorkDataSource;
-import com.depromeet.tmj.im_off.shared.DayType;
 import com.depromeet.tmj.im_off.shared.RoundProgressBar;
 import com.depromeet.tmj.im_off.utils.DateUtils;
 import com.depromeet.tmj.im_off.utils.Injection;
