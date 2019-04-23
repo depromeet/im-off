@@ -141,17 +141,10 @@ public class TimerFragment extends Fragment {
         tvStatistics.setOnClickListener(view -> scrollCallBack.onClickStatistics());
     }
 
-    private void setWeekendUi() {
-        // title 설정
-        tvTitle.setText(String.format(getString(R.string.format_working),
-                getString(DayType.values()[DateUtils.getDayOfWeek()].getMessageRes())));
-
+    private void setWeekendUi(Calendar calendar) {
+        setTitleText(calendar);
         // 회색 눈금 설정
         ivBackgroundCircle.setImageResource(R.drawable.image_dot_circle_gray);
-
-        // 퇴근시간 설정
-        tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
-                "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
 
         roundProgressBar.setArcIsDisplayable(false);
 
@@ -166,7 +159,6 @@ public class TimerFragment extends Fragment {
         // 파란 눈금 설정
         ivBackgroundCircle.setImageResource(R.drawable.image_dot_circle_blue);
 
-        // TODO("퇴근시간 설정")
         tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
                 "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
 
@@ -202,7 +194,7 @@ public class TimerFragment extends Fragment {
 
         SimpleDateFormat ampmFormat = new SimpleDateFormat("a", Locale.US);
         roundProgressBar.setTextAMPM(ampmFormat.format(leavingWork.getLeavingTime()));
-        if(getContext() != null) {
+        if (getContext() != null) {
             roundProgressBar.setCricleProgressColor(ContextCompat.getColor(getContext(), R.color.round_red));
         }
         roundProgressBar.setTimeWithAnim(DateUtils.todayOffStartTime(), new Date(leavingWork.getLeavingTime()));
@@ -213,16 +205,9 @@ public class TimerFragment extends Fragment {
     }
 
     private void setWaitUi(Calendar calendar) {
-        // title 설정
-        tvTitle.setText(String.format(getString(R.string.format_working),
-                getString(DayType.values()[DateUtils.getDayOfWeek()].getMessageRes())));
-
+        setTitleText(calendar);
         // 파란 눈금 설정
         ivBackgroundCircle.setImageResource(R.drawable.image_dot_circle_blue);
-
-        // 퇴근시간 설정
-        tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
-                "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
 
         roundProgressBar.setText(DateUtils.workingTime(calendar));
 
@@ -232,16 +217,10 @@ public class TimerFragment extends Fragment {
     }
 
     private void setWorkingUi(Calendar calendar) {
-        // title 설정
-        tvTitle.setText(String.format(getString(R.string.format_working),
-                getString(DayType.values()[DateUtils.getDayOfWeek()].getMessageRes())));
+        setTitleText(calendar);
 
         // 파란 눈금 설정
         ivBackgroundCircle.setImageResource(R.drawable.image_dot_circle_blue);
-
-        // 퇴근시간 설정
-        tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
-                "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
 
         // 그래프 설정
         roundProgressBar.setText(DateUtils.remainingTime(DateUtils.todayOffStartTime(), calendar.getTime()));
@@ -263,7 +242,7 @@ public class TimerFragment extends Fragment {
         tvLeavingWork.setText(DateUtils.nightWorkingTimeTitle());
 
         // 그래프 설정
-        if(getContext() != null) {
+        if (getContext() != null) {
             roundProgressBar.setCricleProgressColor(ContextCompat.getColor(getContext(), R.color.round_red));
         }
         roundProgressBar.setText(DateUtils.nightWorkingTime());
@@ -272,6 +251,58 @@ public class TimerFragment extends Fragment {
         //버튼 설정
         tvLeaving.setText("퇴근");
         btnLeaving.setOnClickListener(view -> showLeavingDialog());
+    }
+
+    private void setTitleText(Calendar calendar) {
+        switch (calendar.get(Calendar.DAY_OF_WEEK)) {
+            case Calendar.MONDAY:
+                tvTitle.setText(getString(R.string.working_monday));
+                // 퇴근시간 설정
+                tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
+                        "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
+                break;
+            case Calendar.TUESDAY:
+                tvTitle.setText(getString(R.string.working_tuesday));
+                // 퇴근시간 설정
+                tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
+                        "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
+                break;
+            case Calendar.WEDNESDAY:
+                tvTitle.setText(getString(R.string.working_wednsday));
+                // 퇴근시간 설정
+                tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
+                        "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
+                break;
+            case Calendar.THURSDAY:
+                tvTitle.setText(getString(R.string.working_thursday));
+                // 퇴근시간 설정
+                tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
+                        "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
+                break;
+            case Calendar.FRIDAY:
+                tvTitle.setText(getString(R.string.working_friday));
+                // 퇴근시간 설정
+                tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
+                        "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
+                break;
+            case Calendar.SATURDAY:
+                tvTitle.setText(getString(R.string.working_saturday));
+                // 퇴근시간 설정
+                tvLeavingWork.setText(getString(R.string.leaving_saturday));
+                break;
+            case Calendar.SUNDAY:
+                tvTitle.setText(getString(R.string.working_sunday));
+                // 퇴근시간 설정
+                tvLeavingWork.setText(getString(R.string.leaving_sunday));
+                break;
+            default:
+                tvTitle.setText(getString(R.string.working_sunday));
+                // 퇴근시간 설정
+                tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
+                        "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
+                break;
+
+        }
     }
 
 
@@ -288,11 +319,10 @@ public class TimerFragment extends Fragment {
      * 오늘 시간 확인 (평일, 퇴근기록 없음)
      * - 퇴근시간 안지났으면 파란색 STATE_WORKING
      * - 퇴근시간 지났으면 빨간색 STATE_NIGHT_WORKING
-     *
      */
     private void setCurrentState(Calendar calendar) {
         if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
-            setWeekendUi();
+            setWeekendUi(calendar);
         } else {
 
             Injection.provideLeavingWorkRepository().getLeavingWork(DateUtils.calendar2String(calendar),
@@ -377,7 +407,7 @@ public class TimerFragment extends Fragment {
                     REQUEST_PERMISSIONS);
         } else {
             new Handler().post(() -> {
-                if(getActivity() != null) {
+                if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         Uri uri = saveToPicture();
                         if (uri != null) {
