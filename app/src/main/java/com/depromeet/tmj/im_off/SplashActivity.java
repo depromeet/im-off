@@ -33,6 +33,7 @@ public class SplashActivity extends AppCompatActivity {
             public void onAnimationEnd(Animator animation) {
                 startActivity(MainActivity.getCallingIntent(getApplicationContext(), false));
                 overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+                finish();
             }
 
             @Override
