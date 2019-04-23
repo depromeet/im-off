@@ -150,4 +150,16 @@ public class DateUtils {
     public static int getDayOfWeek() {
         return Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
     }
+
+    public static Long getThisWeekMonday() {
+        // 최근 일주일 검색할때 사용
+        Calendar calendar = nowCalendar();
+
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+        return calendar.getTime().getTime();
+    }
 }

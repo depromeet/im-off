@@ -49,6 +49,22 @@ public class LeavingWorkLocalDataSource implements LeavingWorkDataSource {
     }
 
     @Override
+    public void getAfterLeavingWorks(Long date, @NonNull LoadLeavingWorkCallaack callback) {
+        Runnable runnable = () -> {
+            final List<LeavingWork> leavingWorks = leavingWorkDao.getAfterLeavingWorks(date);
+
+            appExecutors.getMainThread().execute(() -> {
+                if(leavingWorks != null) {
+                    callback.onDataLoaded(leavingWorks);
+                } else {
+                    callback.onDataNotAvailable();
+                }
+            });
+        };
+        appExecutors.getDiskIO().execute(runnable);
+    }
+
+    @Override
     public void getLeavingWork(@NonNull final String entryId, @NonNull final GetLeavingWorkCallback callback) {
         Runnable runnable = () -> {
             final LeavingWork leavingWork = leavingWorkDao.getLeavingWorkById(entryId);

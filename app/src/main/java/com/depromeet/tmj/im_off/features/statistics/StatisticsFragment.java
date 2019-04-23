@@ -1,15 +1,20 @@
 package com.depromeet.tmj.im_off.features.statistics;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.depromeet.tmj.im_off.R;
+import com.depromeet.tmj.im_off.data.LeavingWork;
+import com.depromeet.tmj.im_off.data.source.LeavingWorkDataSource;
+import com.depromeet.tmj.im_off.utils.Injection;
+
+import java.util.List;
 
 
 public class StatisticsFragment extends Fragment {
@@ -42,7 +47,7 @@ public class StatisticsFragment extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser) {
+        if (isVisibleToUser) {
             setStatisticsAdapter();
         }
     }
@@ -56,9 +61,20 @@ public class StatisticsFragment extends Fragment {
     }
 
     private void setStatisticsAdapter() {
-        if(rvStatistics != null) {
-            rvStatistics.setAdapter(new StatisticsAdapter());
-            rvStatistics.scheduleLayoutAnimation();
-        }
+        Injection.provideLeavingWorkRepository().getLeavingWorks(new LeavingWorkDataSource.LoadLeavingWorkCallaack() {
+            @Override
+            public void onDataLoaded(List<LeavingWork> leavingWorks) {
+                if (rvStatistics != null) {
+                    rvStatistics.setAdapter(new StatisticsAdapter(leavingWorks));
+                    rvStatistics.scheduleLayoutAnimation();
+                }
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                // TODO("통계 데이터 없을때 화면 설정 필요")
+                Toast.makeText(getContext(), "통계 데이터 없음", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
