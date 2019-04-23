@@ -37,4 +37,6 @@ public interface LeavingWorkDataSource {
     void getKaltoeCount(@NonNull GetKaltoeCallback callback);
 
     void saveLeavingWork(LeavingWork leavingWork, @NonNull SaveCallback callback);
+
+    void getAfterLeavingWorks(Long date, @NonNull LoadLeavingWorkCallaack callback);
 }

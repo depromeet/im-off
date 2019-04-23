@@ -55,6 +55,7 @@
         app:layout_constraintBottom_toBottomOf="@id/tv_contents_main"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_title"
-        app:textIsDisplayable="false" />
+        app:textIsDisplayable="false"
+        app:textSize="18sp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

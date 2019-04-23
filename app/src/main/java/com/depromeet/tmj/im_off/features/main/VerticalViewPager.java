@@ -4,10 +4,15 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Interpolator;
 
 import androidx.viewpager.widget.ViewPager;
 
+import java.lang.reflect.Field;
+
 public class VerticalViewPager extends ViewPager {
+    private ScrollerCustomDuration mScroller = null;
+
     public VerticalViewPager(Context context) {
         this(context, null);
     }
@@ -38,6 +43,7 @@ public class VerticalViewPager extends ViewPager {
         setPageTransformer(true, new VerticalPageTransformer());
         // Get rid of the overscroll drawing that happens on the left and right (the ripple)
         setOverScrollMode(View.OVER_SCROLL_NEVER);
+        postInitViewPager();
     }
 
     @Override
@@ -56,11 +62,32 @@ public class VerticalViewPager extends ViewPager {
         return toHandle;
     }
 
+    private void postInitViewPager() {
+        try {
+            Field scroller = ViewPager.class.getDeclaredField("mScroller");
+            scroller.setAccessible(true);
+            Field interpolator = ViewPager.class.getDeclaredField("sInterpolator");
+            interpolator.setAccessible(true);
+
+            mScroller = new ScrollerCustomDuration(getContext(),
+                    (Interpolator) interpolator.get(null));
+            scroller.set(this, mScroller);
+        } catch (Exception e) {
+        }
+    }
+
+    /**
+     * Set the factor by which the duration will change
+     */
+    public void setScrollDurationFactor(double scrollFactor) {
+        mScroller.setScrollDurationFactor(scrollFactor);
+    }
+
     private MotionEvent flipXY(MotionEvent ev) {
         final float width = getWidth();
         final float height = getHeight();
-        final float x = (ev.getY() / height) * width;
-        final float y = (ev.getX() / width) * height;
+        final float x = (ev.getY() / height) * height;
+        final float y = (ev.getX() / width) * width;
         ev.setLocation(x, y);
         return ev;
     }

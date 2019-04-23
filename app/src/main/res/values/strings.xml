@@ -4,9 +4,17 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="noti_title">노티 제목</string>
     <string name="noti_message">노티 내용</string>
-    
+
     <!-- 타이머 화면 -->
-    <string name="format_working">피곤한 %s\n오늘 꼭 칼퇴하세요.</string>
+    <string name="working_monday">피곤한 월요일\n오늘 꼭 칼퇴하세요.</string>
+    <string name="working_tuesday">숨 가쁜 화요일\n오늘 꼭 칼퇴하세요.</string>
+    <string name="working_wednsday">지치는 수요일\n오늘 꼭 칼퇴하세요.</string>
+    <string name="working_thursday">아직도 목요일\n오늘 꼭 칼퇴하세요.</string>
+    <string name="working_friday">불타는 금요일\n오늘 꼭 칼퇴하세요.</string>
+    <string name="working_saturday">드디어 토요일\n돼지런하게 보내요.</string>
+    <string name="working_sunday">즐거운 일요일\n돼지런하게 보내요.</string>
+    <string name="leaving_saturday">내일도 쉬는날!</string>
+    <string name="leaving_sunday">내일은 월요일..</string>
     <string name="format_leaving_work_time">%s %02d:%02d 퇴근</string>
     <string name="show_statistics">내 칼퇴 기록 보기</string>
     <string name="mon">월요일</string>
