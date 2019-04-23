@@ -1,9 +1,16 @@
 <resources>
     <string name="app_name">칼퇴요정</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="noti_title">노티 제목</string>
-    <string name="noti_message">노티 내용</string>
+    <!-- 알림 내용 -->
+    <string name="noti_title">퇴근 하셨나요?</string>
+    <string name="noti_message1">한번이 어렵지 두번은 쉽다. -칼퇴</string>
+    <string name="noti_message2">빠르면 빠를수록 좋다. -퇴근</string>
+    <string name="noti_message3">오늘 더 한다고 내일 줄지 않는다.</string>
+    <string name="noti_message4">내일의 나를 믿어보자.</string>
+    <string name="noti_message5">칼퇴라고 하지마요. 정시퇴근입니다.</string>
+    <string name="noti_message6">오늘</string>
+    <string name="noti_message7">오늘 더 한다고 내일 줄지 않는다.</string>
+    <string name="noti_message8">내일의 나를 믿어보자.</string>
 
     <!-- 타이머 화면 -->
     <string name="working_monday">피곤한 월요일\n오늘 꼭 칼퇴하세요.</string>

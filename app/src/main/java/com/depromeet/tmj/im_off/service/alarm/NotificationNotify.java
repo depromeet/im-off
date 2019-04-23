@@ -15,8 +15,13 @@ import com.depromeet.tmj.im_off.utils.datastore.AppPreferencesDataStore;
 
 import androidx.core.app.NotificationCompat;
 
+import java.util.Random;
+
 public class NotificationNotify {
     private Context context;
+    private int[] messages = {R.string.noti_message1, R.string.noti_message2, R.string.noti_message3,
+            R.string.noti_message4, R.string.noti_message5, R.string.noti_message6,
+            R.string.noti_message7, R.string.noti_message8,};
 
     public NotificationNotify(Context context) {
         this.context = context;
@@ -24,20 +29,12 @@ public class NotificationNotify {
 
     public void sendPush(NotificationType notificationType) {
         long notificationId = System.currentTimeMillis();
-        PendingIntent pendingIntent = createPendingIntent(notificationType);
+        PendingIntent pendingIntent = createLeavingIntent(1);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         wakeUpDevice(notificationType.name());
         notificationManager.notify((int) notificationId,
                 createNotificationBuilder(notificationType, pendingIntent).build());
-    }
-
-    private PendingIntent createPendingIntent(NotificationType notificationType) {
-        Intent intent = new Intent(context, MainActivity.class);
-
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        return PendingIntent.getActivity(context, notificationType.ordinal(), intent, PendingIntent.FLAG_ONE_SHOT);
     }
 
     private PendingIntent createLeavingIntent(int requestCode) {
@@ -57,9 +54,9 @@ public class NotificationNotify {
 
     private NotificationCompat.Builder createNotificationBuilder(NotificationType notificationType,
                                                                  PendingIntent pendingIntent) {
-
+        Random random = new Random();
         String title = context.getString(notificationType.getTitleRes());
-        String message = context.getString(notificationType.getMessageRes());
+        String message = context.getString(messages[random.nextInt(8)]);
         NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle();
         style.setBigContentTitle(title);
         style.bigText(message);
@@ -78,17 +75,14 @@ public class NotificationNotify {
             }
         }
 
-        PendingIntent actionIntent = createLeavingIntent(1);
-
         return new NotificationCompat.Builder(context, AppPreferencesDataStore.CHANNEL_NOTIFICATION)
                 .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentTitle(title)
-                .addAction(R.drawable.ic_launcher_background, "퇴근!", actionIntent)
                 .setContentText(message)
+                .setSmallIcon(notificationType.getIconRes())
                 .setStyle(style)
-                .setColor(context.getResources().getColor(R.color.colorPrimary))
+                .setColor(context.getResources().getColor(R.color.bg_app_icon))
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent);
     }
