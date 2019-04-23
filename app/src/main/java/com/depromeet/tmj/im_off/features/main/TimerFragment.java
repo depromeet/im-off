@@ -3,8 +3,10 @@ package com.depromeet.tmj.im_off.features.main;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -19,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -47,6 +50,7 @@ import java.util.Objects;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import org.jetbrains.annotations.NotNull;
@@ -384,14 +388,27 @@ public class TimerFragment extends Fragment {
 
     private void showLeavingDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("퇴근")
-                .setMessage("퇴근 하나요?")
+        AlertDialog dialog = builder.setMessage("퇴근 하시겠습니까?")
                 .setCancelable(true)
                 .setPositiveButton("퇴근", (anInterface, i) -> {
                     Toast.makeText(getContext(), "퇴근!!", Toast.LENGTH_SHORT).show();
                     leaving();
                 })
                 .setNegativeButton("야근..ㅠ", (anInterface, i) -> anInterface.dismiss()).show();
+
+        TextView tvTitle = dialog.findViewById(android.R.id.message);
+        tvTitle.setTypeface(ResourcesCompat.getFont(getContext(), R.font.jalnan));
+        tvTitle.setTextSize(22);
+
+        Button btnPositive = dialog.findViewById(android.R.id.button1);
+        Button btnNegative = dialog.findViewById(android.R.id.button2);
+
+        btnPositive.setTextSize(16);
+        btnPositive.setTypeface(ResourcesCompat.getFont(getContext(), R.font.spoqa_regular));
+        btnPositive.setTextColor(ContextCompat.getColor(getContext(), R.color.round_leaving));
+        btnNegative.setTextSize(16);
+        btnNegative.setTypeface(ResourcesCompat.getFont(getContext(), R.font.spoqa_regular));
+        btnNegative.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
     }
 
     private void leaving() {
