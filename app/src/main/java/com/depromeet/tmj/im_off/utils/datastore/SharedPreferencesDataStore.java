@@ -27,4 +27,12 @@ public abstract class SharedPreferencesDataStore {
         sharedPreferences.edit().putInt(key, value).apply();
     }
 
+    protected void putBoolean(String key, boolean value) {
+        sharedPreferences.edit().putBoolean(key, value).apply();
+    }
+
+    protected boolean getBoolean(String key, boolean defValue) {
+        return sharedPreferences.getBoolean(key, defValue);
+    }
+
 }
