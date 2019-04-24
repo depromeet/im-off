@@ -142,9 +142,10 @@ public class SettingActivity extends BaseActivity {
 
         // < 칼퇴 알람 On/Off >
         Switch sw = (Switch) findViewById(R.id.switch_OnNoti);
+        sw.setChecked(dataStore.getNotiEnable());
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                _isOn_offWork_noti = isChecked;
+                dataStore.putNotiEnable(isChecked);
             }
         });
 

@@ -15,6 +15,7 @@ public class AppPreferencesDataStore extends SharedPreferencesDataStore {
     private static final String KEY_START_WORKING_MINUTE = "KEY_START_WORKING_MINUTE";
     private static final String KEY_JOB_POSITION = "KEY_JOB_POSITION";
     private static final String KEY_FIRST_LAUNCH = "KEY_FIRST_LAUNCH";
+    private static final String KEY_NOTI_ENABLE = "KEY_NOTI_ENABLE";
 
     public AppPreferencesDataStore() {
         super(ImOffApplication.getApplication());
@@ -73,5 +74,13 @@ public class AppPreferencesDataStore extends SharedPreferencesDataStore {
 
     public boolean getFirstLaunch() {
         return getBoolean(KEY_FIRST_LAUNCH, true);
+    }
+
+    public void putNotiEnable(boolean isEnable) {
+        putBoolean(KEY_NOTI_ENABLE, isEnable);
+    }
+
+    public boolean getNotiEnable() {
+        return getBoolean(KEY_NOTI_ENABLE, true);
     }
 }

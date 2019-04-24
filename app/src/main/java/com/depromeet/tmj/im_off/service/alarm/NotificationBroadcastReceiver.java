@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.depromeet.tmj.im_off.utils.datastore.AppPreferencesDataStore;
+
 public class NotificationBroadcastReceiver extends BroadcastReceiver {
     private static final String TAG = "NotificationBroadcastReceiver";
     private static final String EXTRA_NOTI_TYPE = "EXTRA_NOTI_TYPE";
@@ -27,7 +29,7 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
         } else {
             int ordinal = intent.getIntExtra(EXTRA_NOTI_TYPE, -1);
 
-            if (ordinal != -1) {
+            if (ordinal != -1 && AppPreferencesDataStore.getInstance().getNotiEnable()) {
                 NotificationType notificationType = NotificationType.values()[ordinal];
                 NotificationNotify notificationNotify = new NotificationNotify(context);
                 notificationNotify.sendPush(notificationType);
