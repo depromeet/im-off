@@ -3,7 +3,7 @@ package com.depromeet.tmj.im_off.service.alarm;
 import com.depromeet.tmj.im_off.R;
 
 public enum NotificationType {
-    LEAVING(R.drawable.ic_logo, R.string.noti_title, R.string.noti_message1);
+    LEAVING(R.drawable.ic_noti_logo, R.string.noti_title, R.string.noti_message1);
 
     private final int iconRes;
     private final int titleRes;
