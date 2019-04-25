@@ -3,10 +3,8 @@ package com.depromeet.tmj.im_off.features.main;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -355,6 +353,7 @@ public class TimerFragment extends Fragment {
                                         if (AppPreferencesDataStore.getInstance().getStartWorkingHour() - calendar.get(Calendar.HOUR_OF_DAY) <= 3
                                                 && AppPreferencesDataStore.getInstance().getStartWorkingHour() - calendar.get(Calendar.HOUR_OF_DAY) > 0) {
                                             setWaitUi(calendar);
+                                            dataStore.putTodayLeaving(false);
                                         } else {
                                             // 아니면 result
                                             if (leavingWork.isKaltoe()) {
@@ -378,6 +377,7 @@ public class TimerFragment extends Fragment {
                                 } else {
                                     // 아니면 근무중
                                     setWorkingUi(calendar);
+                                    dataStore.putTodayLeaving(false);
                                 }
                             }
                         }
@@ -414,6 +414,7 @@ public class TimerFragment extends Fragment {
         LeavingWork leavingWork = new LeavingWork(DateUtils.nowTime());
         Injection.provideLeavingWorkRepository().saveLeavingWork(leavingWork, () ->
                 setCurrentState(DateUtils.nowCalendar()));
+        dataStore.putTodayLeaving(true);
     }
 
     public void setShare() {

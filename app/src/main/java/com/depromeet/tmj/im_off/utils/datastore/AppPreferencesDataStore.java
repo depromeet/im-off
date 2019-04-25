@@ -16,6 +16,7 @@ public class AppPreferencesDataStore extends SharedPreferencesDataStore {
     private static final String KEY_JOB_POSITION = "KEY_JOB_POSITION";
     private static final String KEY_FIRST_LAUNCH = "KEY_FIRST_LAUNCH";
     private static final String KEY_NOTI_ENABLE = "KEY_NOTI_ENABLE";
+    private static final String KEY_TODAY_LEAVING = "KEY_TODAY_LEAVING";
 
     public AppPreferencesDataStore() {
         super(ImOffApplication.getApplication());
@@ -82,5 +83,13 @@ public class AppPreferencesDataStore extends SharedPreferencesDataStore {
 
     public boolean getNotiEnable() {
         return getBoolean(KEY_NOTI_ENABLE, true);
+    }
+
+    public void putTodayLeaving(boolean isLeaving) {
+        putBoolean(KEY_TODAY_LEAVING, isLeaving);
+    }
+
+    public boolean getTodayLeaving() {
+        return getBoolean(KEY_TODAY_LEAVING, false);
     }
 }

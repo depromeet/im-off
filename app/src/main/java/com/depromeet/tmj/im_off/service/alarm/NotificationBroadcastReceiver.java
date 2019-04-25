@@ -29,7 +29,8 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
         } else {
             int ordinal = intent.getIntExtra(EXTRA_NOTI_TYPE, -1);
 
-            if (ordinal != -1 && AppPreferencesDataStore.getInstance().getNotiEnable()) {
+            AppPreferencesDataStore dataStore = AppPreferencesDataStore.getInstance();
+            if (ordinal != -1 && dataStore.getNotiEnable() && !dataStore.getTodayLeaving()) {
                 NotificationType notificationType = NotificationType.values()[ordinal];
                 NotificationNotify notificationNotify = new NotificationNotify(context);
                 notificationNotify.sendPush(notificationType);
