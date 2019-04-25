@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimaryDark">#450fff</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="bg_app_icon">#450fff</color>
     
-    <color name="text_normal">#de3c3c3c</color>
+    <color name="colorText">#191919</color>
+    <color name="white">#ffffff</color>
+    <color name="round_blue">#25f2ff</color>
+    <color name="round_red">#ff295b</color>
+    <color name="round_leaving">#3a2eff</color>
+    <color name="bg_statistics">#f7f7f7</color>
+    <color name="statistics_title">#de191919</color>
 </resources>

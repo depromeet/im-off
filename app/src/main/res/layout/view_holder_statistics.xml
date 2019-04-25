@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="12dp"
+    android:layout_marginEnd="10dp"
+    android:background="@drawable/shape_rect_white_5r"
+    android:clipToPadding="true"
+    android:elevation="2dp"
+    android:paddingStart="20dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="23dp"
+    android:paddingBottom="20dp">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/spoqa_light"
+        android:text="이번주 근무시간"
+        android:textColor="@color/statistics_title"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_contents_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/jalnan"
+        android:text="34시간"
+        android:textColor="@color/colorText"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@id/tv_title"
+        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+    <TextView
+        android:id="@+id/tv_contents_sub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:fontFamily="@font/jalnan"
+        android:text="/52시간"
+        android:textColor="@color/colorText"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_contents_main"
+        app:layout_constraintStart_toEndOf="@id/tv_contents_main" />
+
+    <com.depromeet.tmj.im_off.shared.RoundProgressBar
+        android:id="@+id/progress"
+        android:layout_width="80dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_contents_main"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_title"
+        app:textIsDisplayable="false"
+        app:textSize="18sp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,3 +1,46 @@
 <resources>
-    <string name="app_name">im-off</string>
+    <string name="app_name">칼퇴요정</string>
+
+    <!-- 알림 내용 -->
+    <string name="noti_title">퇴근 하셨나요?</string>
+    <string name="noti_message1">한번이 어렵지 두번은 쉽다. -칼퇴</string>
+    <string name="noti_message2">빠르면 빠를수록 좋다. -퇴근</string>
+    <string name="noti_message3">오늘 더 한다고 내일 줄지 않는다.</string>
+    <string name="noti_message4">내일의 나를 믿어보자.</string>
+    <string name="noti_message5">칼퇴라고 하지마요. 정시퇴근입니다.</string>
+    <string name="noti_message6">오늘</string>
+    <string name="noti_message7">오늘 더 한다고 내일 줄지 않는다.</string>
+    <string name="noti_message8">내일의 나를 믿어보자.</string>
+
+    <!-- 타이머 화면 -->
+    <string name="working_monday">피곤한 월요일\n오늘 꼭 칼퇴하세요.</string>
+    <string name="working_tuesday">숨 가쁜 화요일\n오늘 꼭 칼퇴하세요.</string>
+    <string name="working_wednsday">지치는 수요일\n오늘 꼭 칼퇴하세요.</string>
+    <string name="working_thursday">아직도 목요일\n오늘 꼭 칼퇴하세요.</string>
+    <string name="working_friday">불타는 금요일\n오늘 꼭 칼퇴하세요.</string>
+    <string name="working_saturday">드디어 토요일\n돼지런하게 보내요.</string>
+    <string name="working_sunday">즐거운 일요일\n돼지런하게 보내요.</string>
+    <string name="leaving_saturday">내일도 쉬는날!</string>
+    <string name="leaving_sunday">내일은 월요일..</string>
+    <string name="format_leaving_work_time">%s %02d:%02d 퇴근</string>
+    <string name="show_statistics">내 칼퇴 기록 보기</string>
+    <string name="mon">월요일</string>
+    <string name="tue">화요일</string>
+    <string name="wed">수요일</string>
+    <string name="thu">목요일</string>
+    <string name="fri">금요일</string>
+    <string name="sat">토요일</string>
+    <string name="sun">일요일</string>
+    <string name="format_night_working">야근중입니다.\n어서 퇴근하세요!</string>
+    <string name="leaving">퇴근</string>
+    <string name="title_kaltoe">축하합니다.\n칼퇴하셨군요.</string>
+    <string name="title_night_work">야근하셨군요..\n내일은 꼭 칼퇴를!</string>
+
+
+    <!-- 통계 화면 -->
+    <string name="title_statistics">내 칼퇴 기록</string>
+    <string name="title_working_time">이번주 근무 시간</string>
+    <string name="title_leaving_time">평균 퇴근 시간</string>
+    <string name="title_kaltoe_day">주로 칼퇴하는 요일</string>
+    <string name="title_night_working_day">주로 야근하는 요일</string>
 </resources>
