@@ -66,7 +66,7 @@ public class SettingActivity extends BaseActivity {
         int goWorkMinute = dataStore.getStartWorkingMinute();
 
         if (goWorkHour != -1) {
-            TextView tv = (TextView) findViewById(R.id.tv_offWork);
+            TextView tv = (TextView) findViewById(R.id.tv_goWork);
 
             if (12 < goWorkHour) {
                 tv.setText(String.format(Locale.KOREA, "오후 %02d : %02d", goWorkHour - 12, goWorkMinute));
@@ -79,9 +79,9 @@ public class SettingActivity extends BaseActivity {
         int leavingWorkMinute = dataStore.getLeavingOffMinute();
 
         if (leavingWorkHour != -1) {
-            TextView tv = (TextView) findViewById(R.id.tv_goWork);
+            TextView tv = (TextView) findViewById(R.id.tv_offWork);
 
-            if (12 < goWorkHour) {
+            if (12 < leavingWorkHour) {
                 tv.setText(String.format(Locale.KOREA, "오후 %02d : %02d", leavingWorkHour - 12, leavingWorkMinute));
             } else {
                 tv.setText(String.format(Locale.KOREA, "오전 %02d : %02d", leavingWorkHour, leavingWorkMinute));
