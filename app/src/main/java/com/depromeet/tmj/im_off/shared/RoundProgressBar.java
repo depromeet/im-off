@@ -131,7 +131,7 @@ public class RoundProgressBar extends View {
 
         if (textIsDisplayable) {
             float textWidth = paint.measureText(text);   //Measure the font width, we need according to the font width in the middle ring
-            canvas.drawText(text, centre - textWidth / 2, centre + textSize / 2, paint); //Draw the percentage
+            canvas.drawText(text, centre - textWidth / 2, centre + textSize / 3, paint); //Draw the percentage
             if (isResult && textAMPM != null) {
                 paint.setTextSize(textSize / 2);
                 canvas.drawText(textAMPM, centre - textWidth / 2, centre - textSize / 2, paint);

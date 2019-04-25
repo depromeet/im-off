@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.depromeet.tmj.im_off.R;
 import com.depromeet.tmj.im_off.shared.RoundProgressBar;
+import com.depromeet.tmj.im_off.utils.DisplayUtils;
 
 import java.util.Calendar;
 
@@ -63,6 +64,7 @@ public class KaltoeDayViewHolder extends RecyclerView.ViewHolder {
 
         tvSub.setVisibility(View.INVISIBLE);
         progressBar.setWorkingTimeWithAnim(52);
+        progressBar.setTextSize(DisplayUtils.dpToPixel(context, 15));
         progressBar.setTextIsDisplayable(true);
         progressBar.setFont(ResourcesCompat.getFont(context, R.font.spoqa_bold));
     }
