@@ -106,7 +106,7 @@ public class StatisticsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private int getMostKaltoeDay() {
         // 요일별 칼퇴 여부 저장
-        List<Integer> kaloteList = Arrays.asList(0, 0, 0, 0, 0, 0, 0);
+        List<Integer> kaloteList = Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0);
         if (totalLeavingWorks != null) {
             for (LeavingWork leavingWork : this.totalLeavingWorks) {
                 if (leavingWork.isKaltoe()) {
@@ -117,12 +117,12 @@ public class StatisticsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         int max = Collections.max(kaloteList);
 
-        return kaloteList.indexOf(max) + 1;
+        return kaloteList.indexOf(max);
     }
 
     private int getMostNightWorkDay() {
         // 요일별 칼퇴 여부 저장
-        List<Integer> nightWorkList = Arrays.asList(0, 0, 0, 0, 0, 0, 0);
+        List<Integer> nightWorkList = Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0);
 
         if (totalLeavingWorks != null) {
             for (LeavingWork leavingWork : this.totalLeavingWorks) {
@@ -134,7 +134,7 @@ public class StatisticsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         int max = Collections.max(nightWorkList);
 
-        return nightWorkList.indexOf(max) + 1;
+        return nightWorkList.indexOf(max);
     }
 
     private Date getAverageLeavingTime() {

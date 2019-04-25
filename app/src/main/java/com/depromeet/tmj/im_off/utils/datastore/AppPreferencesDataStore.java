@@ -13,20 +13,24 @@ public class AppPreferencesDataStore extends SharedPreferencesDataStore {
     private static final String KEY_LEAVING_OFF_MINUTE = "KEY_LEAVING_OFF_MINUTE";
     private static final String KEY_START_WORKING_HOUR = "KEY_START_WORKING_HOUR";
     private static final String KEY_START_WORKING_MINUTE = "KEY_START_WORKING_MINUTE";
+    private static final String KEY_JOB_POSITION = "KEY_JOB_POSITION";
+    private static final String KEY_FIRST_LAUNCH = "KEY_FIRST_LAUNCH";
+    private static final String KEY_NOTI_ENABLE = "KEY_NOTI_ENABLE";
+    private static final String KEY_TODAY_LEAVING = "KEY_TODAY_LEAVING";
 
     public AppPreferencesDataStore() {
         super(ImOffApplication.getApplication());
     }
 
     public static AppPreferencesDataStore getInstance() {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             INSTANCE = new AppPreferencesDataStore();
         }
         return INSTANCE;
     }
 
     public int getLeavingOffHour() {
-        return getInt(KEY_LEAVING_OFF_HOUR, 18);
+        return getInt(KEY_LEAVING_OFF_HOUR, -1);
     }
 
     public void putLeavingOffHour(int hour) {
@@ -34,7 +38,7 @@ public class AppPreferencesDataStore extends SharedPreferencesDataStore {
     }
 
     public int getLeavingOffMinute() {
-        return getInt(KEY_LEAVING_OFF_MINUTE, 0);
+        return getInt(KEY_LEAVING_OFF_MINUTE, -1);
     }
 
     public void putLeavingOffMinute(int minute) {
@@ -42,7 +46,7 @@ public class AppPreferencesDataStore extends SharedPreferencesDataStore {
     }
 
     public int getStartWorkingHour() {
-        return getInt(KEY_START_WORKING_HOUR, 9);
+        return getInt(KEY_START_WORKING_HOUR, -1);
     }
 
     public void putStartWorkingHour(int hour) {
@@ -50,10 +54,42 @@ public class AppPreferencesDataStore extends SharedPreferencesDataStore {
     }
 
     public int getStartWorkingMinute() {
-        return getInt(KEY_START_WORKING_MINUTE, 0);
+        return getInt(KEY_START_WORKING_MINUTE, -1);
     }
 
     public void putStartWorkingMinute(int minute) {
         putInt(KEY_START_WORKING_MINUTE, minute);
+    }
+
+    public void putJobPosition(String job) {
+        putString(KEY_JOB_POSITION, job);
+    }
+
+    public String getJobPosition() {
+        return getString(KEY_JOB_POSITION, "나의 직군");
+    }
+
+    public void putFirstLaunch(boolean isFirst) {
+        putBoolean(KEY_FIRST_LAUNCH, isFirst);
+    }
+
+    public boolean getFirstLaunch() {
+        return getBoolean(KEY_FIRST_LAUNCH, true);
+    }
+
+    public void putNotiEnable(boolean isEnable) {
+        putBoolean(KEY_NOTI_ENABLE, isEnable);
+    }
+
+    public boolean getNotiEnable() {
+        return getBoolean(KEY_NOTI_ENABLE, true);
+    }
+
+    public void putTodayLeaving(boolean isLeaving) {
+        putBoolean(KEY_TODAY_LEAVING, isLeaving);
+    }
+
+    public boolean getTodayLeaving() {
+        return getBoolean(KEY_TODAY_LEAVING, false);
     }
 }

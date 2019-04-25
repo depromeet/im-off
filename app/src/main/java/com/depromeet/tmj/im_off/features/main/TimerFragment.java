@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,7 +30,6 @@ import com.depromeet.tmj.im_off.R;
 import com.depromeet.tmj.im_off.SettingActivity;
 import com.depromeet.tmj.im_off.data.LeavingWork;
 import com.depromeet.tmj.im_off.data.source.LeavingWorkDataSource;
-import com.depromeet.tmj.im_off.shared.DayType;
 import com.depromeet.tmj.im_off.shared.RoundProgressBar;
 import com.depromeet.tmj.im_off.utils.DateUtils;
 import com.depromeet.tmj.im_off.utils.Injection;
@@ -47,6 +47,7 @@ import java.util.Objects;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import org.jetbrains.annotations.NotNull;
@@ -352,6 +353,7 @@ public class TimerFragment extends Fragment {
                                         if (AppPreferencesDataStore.getInstance().getStartWorkingHour() - calendar.get(Calendar.HOUR_OF_DAY) <= 3
                                                 && AppPreferencesDataStore.getInstance().getStartWorkingHour() - calendar.get(Calendar.HOUR_OF_DAY) > 0) {
                                             setWaitUi(calendar);
+                                            dataStore.putTodayLeaving(false);
                                         } else {
                                             // 아니면 result
                                             if (leavingWork.isKaltoe()) {
@@ -375,6 +377,7 @@ public class TimerFragment extends Fragment {
                                 } else {
                                     // 아니면 근무중
                                     setWorkingUi(calendar);
+                                    dataStore.putTodayLeaving(false);
                                 }
                             }
                         }
@@ -384,20 +387,34 @@ public class TimerFragment extends Fragment {
 
     private void showLeavingDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("퇴근")
-                .setMessage("퇴근 하나요?")
+        AlertDialog dialog = builder.setMessage("퇴근 하시겠습니까?")
                 .setCancelable(true)
                 .setPositiveButton("퇴근", (anInterface, i) -> {
                     Toast.makeText(getContext(), "퇴근!!", Toast.LENGTH_SHORT).show();
                     leaving();
                 })
                 .setNegativeButton("야근..ㅠ", (anInterface, i) -> anInterface.dismiss()).show();
+
+        TextView tvTitle = dialog.findViewById(android.R.id.message);
+        tvTitle.setTypeface(ResourcesCompat.getFont(getContext(), R.font.jalnan));
+        tvTitle.setTextSize(22);
+
+        Button btnPositive = dialog.findViewById(android.R.id.button1);
+        Button btnNegative = dialog.findViewById(android.R.id.button2);
+
+        btnPositive.setTextSize(16);
+        btnPositive.setTypeface(ResourcesCompat.getFont(getContext(), R.font.spoqa_regular));
+        btnPositive.setTextColor(ContextCompat.getColor(getContext(), R.color.round_leaving));
+        btnNegative.setTextSize(16);
+        btnNegative.setTypeface(ResourcesCompat.getFont(getContext(), R.font.spoqa_regular));
+        btnNegative.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
     }
 
     private void leaving() {
         LeavingWork leavingWork = new LeavingWork(DateUtils.nowTime());
         Injection.provideLeavingWorkRepository().saveLeavingWork(leavingWork, () ->
                 setCurrentState(DateUtils.nowCalendar()));
+        dataStore.putTodayLeaving(true);
     }
 
     public void setShare() {

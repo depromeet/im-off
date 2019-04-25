@@ -14,6 +14,8 @@ import com.depromeet.tmj.im_off.features.main.TimerFragment;
 import com.depromeet.tmj.im_off.features.main.VerticalViewPager;
 import com.depromeet.tmj.im_off.features.main.ViewPagerAdapter;
 import com.depromeet.tmj.im_off.service.alarm.NotificationAlarmManager;
+import com.depromeet.tmj.im_off.utils.DateUtils;
+import com.depromeet.tmj.im_off.utils.datastore.AppPreferencesDataStore;
 
 import static com.depromeet.tmj.im_off.features.main.TimerFragment.REQUEST_PERMISSIONS;
 
@@ -86,7 +88,9 @@ public class MainActivity extends AppCompatActivity implements TimerFragment.Scr
 
     private void initNoti() {
         NotificationAlarmManager alarmManager = new NotificationAlarmManager(this);
-        alarmManager.registerAll();
+        if(DateUtils.nowTime() < DateUtils.todayOffStartTime().getTime() && !AppPreferencesDataStore.getInstance().getTodayLeaving()) {
+            alarmManager.registerAll();
+        }
     }
 
     private void setShare() {

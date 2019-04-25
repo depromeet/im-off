@@ -3,9 +3,11 @@ package com.depromeet.tmj.im_off;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.Animator;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.depromeet.tmj.im_off.utils.datastore.AppPreferencesDataStore;
 
 public class SplashActivity extends AppCompatActivity {
     private LottieAnimationView lottie;
@@ -31,8 +33,11 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                startActivity(MainActivity.getCallingIntent(getApplicationContext(), false));
-                overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+                if (isFirstLaunch()) {
+                    goToSettingActivity();
+                } else {
+                    goToMainActivity();
+                }
                 finish();
             }
 
@@ -46,5 +51,21 @@ public class SplashActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void goToMainActivity() {
+        startActivity(MainActivity.getCallingIntent(getApplicationContext(), false));
+        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+    }
+
+    private void goToSettingActivity() {
+        Intent intent = new Intent(this, SettingActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+    }
+
+    private boolean isFirstLaunch() {
+        AppPreferencesDataStore dataStore = AppPreferencesDataStore.getInstance();
+        return dataStore.getFirstLaunch();
     }
 }
