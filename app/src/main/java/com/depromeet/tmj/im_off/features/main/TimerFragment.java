@@ -171,6 +171,7 @@ public class TimerFragment extends Fragment {
         roundProgressBar.setText(progressFormat.format(leavingWork.getLeavingTime()));
 
         SimpleDateFormat ampmFormat = new SimpleDateFormat("a", Locale.US);
+        roundProgressBar.setCricleProgressColor(ContextCompat.getColor(getContext(), R.color.round_blue));
         roundProgressBar.setTextAMPM(ampmFormat.format(leavingWork.getLeavingTime()));
         roundProgressBar.setTimeWithAnim(DateUtils.todayStartWorkingTime(Calendar.getInstance()), new Date(leavingWork.getLeavingTime()));
 
