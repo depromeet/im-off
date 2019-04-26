@@ -103,6 +103,12 @@ public class TimerFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setCurrentState(DateUtils.nowCalendar());
+    }
+
     private void initArgs() {
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -123,13 +129,11 @@ public class TimerFragment extends Fragment {
     }
 
     private void initUi() {
-        Calendar calendar = DateUtils.nowCalendar();
 
         if (BuildConfig.DEBUG) {
 //            calendar.set(Calendar.DAY_OF_MONTH, 16);
 //            calendar.set(Calendar.HOUR_OF_DAY, 7);
         }
-        setCurrentState(calendar);
 
         Animation rotation = AnimationUtils.loadAnimation(getContext(), R.anim.rotate);
         ivBackgroundCircle.startAnimation(rotation);
@@ -171,6 +175,7 @@ public class TimerFragment extends Fragment {
         roundProgressBar.setText(progressFormat.format(leavingWork.getLeavingTime()));
 
         SimpleDateFormat ampmFormat = new SimpleDateFormat("a", Locale.US);
+        roundProgressBar.setCricleProgressColor(ContextCompat.getColor(getContext(), R.color.round_blue));
         roundProgressBar.setTextAMPM(ampmFormat.format(leavingWork.getLeavingTime()));
         roundProgressBar.setTimeWithAnim(DateUtils.todayStartWorkingTime(Calendar.getInstance()), new Date(leavingWork.getLeavingTime()));
 
@@ -255,36 +260,39 @@ public class TimerFragment extends Fragment {
     }
 
     private void setTitleText(Calendar calendar) {
+        int hour = dataStore.getLeavingOffHour();
+
+        hour = hour > 12 ? hour - 12 : hour;
         switch (calendar.get(Calendar.DAY_OF_WEEK)) {
             case Calendar.MONDAY:
                 tvTitle.setText(getString(R.string.working_monday));
                 // 퇴근시간 설정
                 tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
-                        "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
+                        "오후", hour, dataStore.getLeavingOffMinute()));
                 break;
             case Calendar.TUESDAY:
                 tvTitle.setText(getString(R.string.working_tuesday));
                 // 퇴근시간 설정
                 tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
-                        "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
+                        "오후", hour, dataStore.getLeavingOffMinute()));
                 break;
             case Calendar.WEDNESDAY:
                 tvTitle.setText(getString(R.string.working_wednsday));
                 // 퇴근시간 설정
                 tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
-                        "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
+                        "오후", hour, dataStore.getLeavingOffMinute()));
                 break;
             case Calendar.THURSDAY:
                 tvTitle.setText(getString(R.string.working_thursday));
                 // 퇴근시간 설정
                 tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
-                        "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
+                        "오후", hour, dataStore.getLeavingOffMinute()));
                 break;
             case Calendar.FRIDAY:
                 tvTitle.setText(getString(R.string.working_friday));
                 // 퇴근시간 설정
                 tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
-                        "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
+                        "오후", hour, dataStore.getLeavingOffMinute()));
                 break;
             case Calendar.SATURDAY:
                 tvTitle.setText(getString(R.string.working_saturday));
