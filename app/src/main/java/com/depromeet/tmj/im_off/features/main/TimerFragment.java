@@ -255,36 +255,39 @@ public class TimerFragment extends Fragment {
     }
 
     private void setTitleText(Calendar calendar) {
+        int hour = dataStore.getLeavingOffHour();
+
+        hour = hour > 12 ? hour - 12 : hour;
         switch (calendar.get(Calendar.DAY_OF_WEEK)) {
             case Calendar.MONDAY:
                 tvTitle.setText(getString(R.string.working_monday));
                 // 퇴근시간 설정
                 tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
-                        "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
+                        "오후", hour, dataStore.getLeavingOffMinute()));
                 break;
             case Calendar.TUESDAY:
                 tvTitle.setText(getString(R.string.working_tuesday));
                 // 퇴근시간 설정
                 tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
-                        "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
+                        "오후", hour, dataStore.getLeavingOffMinute()));
                 break;
             case Calendar.WEDNESDAY:
                 tvTitle.setText(getString(R.string.working_wednsday));
                 // 퇴근시간 설정
                 tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
-                        "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
+                        "오후", hour, dataStore.getLeavingOffMinute()));
                 break;
             case Calendar.THURSDAY:
                 tvTitle.setText(getString(R.string.working_thursday));
                 // 퇴근시간 설정
                 tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
-                        "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
+                        "오후", hour, dataStore.getLeavingOffMinute()));
                 break;
             case Calendar.FRIDAY:
                 tvTitle.setText(getString(R.string.working_friday));
                 // 퇴근시간 설정
                 tvLeavingWork.setText(String.format(getString(R.string.format_leaving_work_time),
-                        "오후", dataStore.getLeavingOffHour(), dataStore.getLeavingOffMinute()));
+                        "오후", hour, dataStore.getLeavingOffMinute()));
                 break;
             case Calendar.SATURDAY:
                 tvTitle.setText(getString(R.string.working_saturday));
