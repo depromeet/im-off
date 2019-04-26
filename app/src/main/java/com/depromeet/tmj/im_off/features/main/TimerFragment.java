@@ -103,6 +103,12 @@ public class TimerFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setCurrentState(DateUtils.nowCalendar());
+    }
+
     private void initArgs() {
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -123,13 +129,11 @@ public class TimerFragment extends Fragment {
     }
 
     private void initUi() {
-        Calendar calendar = DateUtils.nowCalendar();
 
         if (BuildConfig.DEBUG) {
 //            calendar.set(Calendar.DAY_OF_MONTH, 16);
 //            calendar.set(Calendar.HOUR_OF_DAY, 7);
         }
-        setCurrentState(calendar);
 
         Animation rotation = AnimationUtils.loadAnimation(getContext(), R.anim.rotate);
         ivBackgroundCircle.startAnimation(rotation);
