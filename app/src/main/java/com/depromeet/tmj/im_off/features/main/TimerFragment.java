@@ -367,7 +367,13 @@ public class TimerFragment extends Fragment {
                                     @Override
                                     public void onDataNotAvailable() {
                                         // 없으면 야근중
-                                        setNightWorkingUi(calendar);
+                                        if (AppPreferencesDataStore.getInstance().getStartWorkingHour() - calendar.get(Calendar.HOUR_OF_DAY) <= 3
+                                                && AppPreferencesDataStore.getInstance().getStartWorkingHour() - calendar.get(Calendar.HOUR_OF_DAY) > 0) {
+                                            setWaitUi(calendar);
+                                            dataStore.putTodayLeaving(false);
+                                        } else {
+                                            setNightWorkingUi(calendar);
+                                        }
                                     }
                                 });
                             } else {
