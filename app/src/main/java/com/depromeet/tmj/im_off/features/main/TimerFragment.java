@@ -399,7 +399,7 @@ public class TimerFragment extends Fragment {
                     Toast.makeText(getContext(), "퇴근!!", Toast.LENGTH_SHORT).show();
                     leaving();
                 })
-                .setNegativeButton("야근..ㅠ", (anInterface, i) -> anInterface.dismiss()).show();
+                .setNegativeButton("아직..", (anInterface, i) -> anInterface.dismiss()).show();
 
         TextView tvTitle = dialog.findViewById(android.R.id.message);
         tvTitle.setTypeface(ResourcesCompat.getFont(getContext(), R.font.jalnan));
