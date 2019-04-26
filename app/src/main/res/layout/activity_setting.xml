@@ -23,7 +23,7 @@
     <LinearLayout
         android:id="@+id/layout_goWork"
         android:layout_width="163dp"
-        android:layout_height="44dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="90dp"
         android:background="#f3f3f3"
@@ -58,9 +58,9 @@
     <LinearLayout
         android:id="@+id/layout_offWork"
         android:layout_width="163dp"
-        android:layout_height="44dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="150dp"
         android:background="#f3f3f3"
         android:orientation="horizontal"
         android:padding="10dp"
@@ -107,7 +107,7 @@
     <LinearLayout
         android:id="@+id/layout_select_job"
         android:layout_width="163dp"
-        android:layout_height="44dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="277dp"
         android:background="#f3f3f3"
@@ -174,7 +174,7 @@
         android:layout_marginTop="427dp"
         android:fontFamily="@font/spoqa_light"
         android:lineSpacingExtra="7sp"
-        android:text="퇴근시간 후 30분 간격의 퇴근확인\n 푸시알림이 발생합니다."
+        android:text="퇴근시간 후 퇴근확인\n푸시알림이 발생합니다."
         android:textColor="#191919"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
