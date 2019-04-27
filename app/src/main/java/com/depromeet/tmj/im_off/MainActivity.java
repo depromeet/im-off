@@ -16,6 +16,7 @@ import com.depromeet.tmj.im_off.features.main.ViewPagerAdapter;
 import com.depromeet.tmj.im_off.service.alarm.NotificationAlarmManager;
 import com.depromeet.tmj.im_off.utils.DateUtils;
 import com.depromeet.tmj.im_off.utils.datastore.AppPreferencesDataStore;
+import com.google.android.gms.ads.MobileAds;
 
 import static com.depromeet.tmj.im_off.features.main.TimerFragment.REQUEST_PERMISSIONS;
 
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements TimerFragment.Scr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initAdmob();
         initArgs();
         initNoti();
         initBinding();
@@ -50,6 +52,10 @@ public class MainActivity extends AppCompatActivity implements TimerFragment.Scr
         }
     }
 
+    private void initAdmob() {
+        MobileAds.initialize(this, getString(R.string.admob_app_id));
+    }
+
     private void initArgs() {
         this.isLeaving = getIntent().getBooleanExtra(EXTRA_IS_LEAVING, false);
     }
@@ -69,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements TimerFragment.Scr
 
             @Override
             public void onPageSelected(int position) {
-                if(position == 0) {
+                if (position == 0) {
                     getWindow().setStatusBarColor(getResources()
                             .getColor(R.color.white, getTheme()));
                 } else {
@@ -88,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements TimerFragment.Scr
 
     private void initNoti() {
         NotificationAlarmManager alarmManager = new NotificationAlarmManager(this);
-        if(DateUtils.nowTime() < DateUtils.todayOffStartTime().getTime() && !AppPreferencesDataStore.getInstance().getTodayLeaving()) {
+        if (DateUtils.nowTime() < DateUtils.todayOffStartTime().getTime() && !AppPreferencesDataStore.getInstance().getTodayLeaving()) {
             alarmManager.registerAll();
         }
     }
