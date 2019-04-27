@@ -6,22 +6,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.depromeet.tmj.im_off.BuildConfig;
 import com.depromeet.tmj.im_off.R;
 import com.depromeet.tmj.im_off.data.LeavingWork;
 import com.depromeet.tmj.im_off.data.source.LeavingWorkDataSource;
 import com.depromeet.tmj.im_off.utils.Injection;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 import java.util.List;
 
 
 public class StatisticsFragment extends Fragment {
     private static final String TAG = "Statistics";
+    private static final int ADVIEW_ID = 100;
 
     private RecyclerView rvStatistics;
     private TextView tvNoData;
+    private ConstraintLayout root;
 
     public StatisticsFragment() {
     }
@@ -42,6 +50,7 @@ public class StatisticsFragment extends Fragment {
 
         initBinding(view);
         initUi();
+        initAdmob();
         return view;
     }
 
@@ -56,10 +65,35 @@ public class StatisticsFragment extends Fragment {
     private void initBinding(View view) {
         rvStatistics = view.findViewById(R.id.rv_statistics);
         tvNoData = view.findViewById(R.id.tv_no_data);
+        root = view.findViewById(R.id.root);
     }
 
     private void initUi() {
 
+    }
+
+    private void initAdmob() {
+        AdView adView = new AdView(getContext());
+
+        adView.setId(ADVIEW_ID);
+        adView.setLayoutParams(new AdView.LayoutParams(AdView.LayoutParams.MATCH_PARENT, AdView.LayoutParams.WRAP_CONTENT));
+        adView.setAdSize(AdSize.SMART_BANNER);
+        if (BuildConfig.DEBUG) {
+            adView.setAdUnitId(getString(R.string.admob_ad_test_id));
+        } else {
+            adView.setAdUnitId(getString(R.string.admob_ad_id));
+        }
+        root.addView(adView, 0);
+
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(root);
+        constraintSet.connect(adView.getId(), ConstraintSet.START, root.getId(), ConstraintSet.START);
+        constraintSet.connect(adView.getId(), ConstraintSet.END, root.getId(), ConstraintSet.END);
+        constraintSet.connect(adView.getId(), ConstraintSet.BOTTOM, root.getId(), ConstraintSet.BOTTOM);
+        constraintSet.applyTo(root);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
     }
 
     private void setStatisticsAdapter() {
