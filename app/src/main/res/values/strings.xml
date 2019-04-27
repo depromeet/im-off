@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">칼퇴요정</string>
 
+    <!-- Admob -->
+    <string name="admob_app_id">ca-app-pub-9122500722777272~5650931405</string>
+    <string name="admob_ad_id">ca-app-pub-9122500722777272/3832730500</string>
+    <string name="admob_ad_test_id">ca-app-pub-3940256099942544/6300978111</string>
+
     <!-- 알림 내용 -->
     <string name="noti_title">퇴근 하셨나요?</string>
     <string name="noti_message1">한번이 어렵지 두번은 쉽다. -칼퇴</string>

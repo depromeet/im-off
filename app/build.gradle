@@ -6,8 +6,8 @@ android {
         applicationId "com.depromeet.tmj.im_off"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 4
-        versionName "1.0.3"
+        versionCode 5
+        versionName "1.0.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -70,5 +70,8 @@ dependencies {
 
     // Lottie
     implementation 'com.airbnb.android:lottie:3.0.0'
+
+    // Admob
+    implementation 'com.google.android.gms:play-services-ads:17.2.0'
 
 }
