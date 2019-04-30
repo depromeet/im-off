@@ -2,8 +2,8 @@
     <string name="app_name">칼퇴요정</string>
 
     <!-- Admob -->
-    <string name="admob_app_id">ca-app-pub-9122500722777272~5650931405</string>
-    <string name="admob_ad_id">ca-app-pub-9122500722777272/3832730500</string>
+    <string name="admob_app_id">ca-app-pub-1527951560812478~9909880237</string>
+    <string name="admob_ad_id">ca-app-pub-1527951560812478/5259709850</string>
     <string name="admob_ad_test_id">ca-app-pub-3940256099942544/6300978111</string>
 
     <!-- 알림 내용 -->
