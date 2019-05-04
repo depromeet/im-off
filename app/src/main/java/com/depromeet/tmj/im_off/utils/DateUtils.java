@@ -137,8 +137,11 @@ public class DateUtils {
 
     public static float time2Angle(Date date) {
         long time = date.getTime();
-        int hours = (int) time / (1000 * 60 * 60);
-        int minute = (int) (time / (1000 * 60)) % 60;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(time);
+
+        int hours = calendar.get(Calendar.HOUR);
+        int minute = calendar.get(Calendar.MINUTE);
 
         return (ANGLE_HOUR * hours) + (ANGLE_MINUTE * minute) - ANGLE_OFFSET;
     }
