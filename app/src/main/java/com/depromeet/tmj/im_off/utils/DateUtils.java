@@ -66,6 +66,21 @@ public class DateUtils {
         return offTime.getTime();
     }
 
+    public static Date todayOffStartTime(Calendar calendar) {
+        AppPreferencesDataStore dataStore = AppPreferencesDataStore.getInstance();
+        Calendar offTime = Calendar.getInstance();
+        offTime.setTimeInMillis(calendar.getTimeInMillis());
+
+        if(offTime.get(Calendar.HOUR_OF_DAY) < dataStore.getLeavingOffHour()) {
+            offTime.add(Calendar.DATE, -1);
+        }
+
+        offTime.set(Calendar.HOUR_OF_DAY, dataStore.getLeavingOffHour());
+        offTime.set(Calendar.MINUTE, dataStore.getLeavingOffMinute());
+
+        return offTime.getTime();
+    }
+
     public static Calendar todayOffCalendar() {
         AppPreferencesDataStore dataStore = AppPreferencesDataStore.getInstance();
         Calendar offTime = Calendar.getInstance();
@@ -78,7 +93,8 @@ public class DateUtils {
 
     public static Date todayStartWorkingTime(Calendar calendar) {
         AppPreferencesDataStore dataStore = AppPreferencesDataStore.getInstance();
-        Calendar startTime = nowCalendar();
+        Calendar startTime = Calendar.getInstance();
+        startTime.setTimeInMillis(calendar.getTimeInMillis());
 
         startTime.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
         startTime.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH));
@@ -88,9 +104,29 @@ public class DateUtils {
         return startTime.getTime();
     }
 
-    public static Date todayOffEndTime() {
+    public static Date getStartWorkingTime(Calendar calendar) {
+        AppPreferencesDataStore dataStore = AppPreferencesDataStore.getInstance();
+        Calendar startTime = Calendar.getInstance();
+        startTime.setTimeInMillis(calendar.getTimeInMillis());
+
+        if(startTime.get(Calendar.HOUR_OF_DAY) < dataStore.getStartWorkingHour()) {
+            startTime.add(Calendar.DATE, -1);
+        }
+        startTime.set(Calendar.HOUR_OF_DAY, dataStore.getStartWorkingHour());
+        startTime.set(Calendar.MINUTE, dataStore.getStartWorkingMinute());
+
+        return startTime.getTime();
+    }
+
+
+    public static Date todayOffEndTime(Calendar calendar) {
         AppPreferencesDataStore dataStore = AppPreferencesDataStore.getInstance();
         Calendar offTime = Calendar.getInstance();
+        offTime.setTimeInMillis(calendar.getTimeInMillis());
+
+        if(offTime.get(Calendar.HOUR_OF_DAY) < dataStore.getStartWorkingHour()) {
+            offTime.add(Calendar.DATE, -1);
+        }
 
         offTime.set(Calendar.HOUR_OF_DAY, dataStore.getLeavingOffHour());
         offTime.set(Calendar.MINUTE, dataStore.getLeavingOffMinute());
@@ -101,8 +137,11 @@ public class DateUtils {
 
     public static float time2Angle(Date date) {
         long time = date.getTime();
-        int hours = (int) time / (1000 * 60 * 60);
-        int minute = (int) (time / (1000 * 60)) % 60;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(time);
+
+        int hours = calendar.get(Calendar.HOUR);
+        int minute = calendar.get(Calendar.MINUTE);
 
         return (ANGLE_HOUR * hours) + (ANGLE_MINUTE * minute) - ANGLE_OFFSET;
     }
@@ -131,16 +170,16 @@ public class DateUtils {
         return String.format(Locale.KOREA, "%d:%02d", hours, minute);
     }
 
-    public static String nightWorkingTime() {
-        long diff = new Date().getTime() - todayOffStartTime().getTime();
+    public static String nightWorkingTime(Calendar calendar) {
+        long diff = calendar.getTimeInMillis() - todayOffStartTime(calendar).getTime();
         int hours = (int) diff / (1000 * 60 * 60);
         int minute = (int) (diff / (1000 * 60)) % 60;
 
         return String.format(Locale.KOREA, "+ %d:%02d", hours, minute);
     }
 
-    public static String nightWorkingTimeTitle() {
-        long diff = new Date().getTime() - todayOffStartTime().getTime();
+    public static String nightWorkingTimeTitle(Calendar calendar) {
+        long diff = calendar.getTimeInMillis() - todayOffStartTime(calendar).getTime();
         int hours = (int) diff / (1000 * 60 * 60);
         int minute = (int) (diff / (1000 * 60)) % 60;
 
