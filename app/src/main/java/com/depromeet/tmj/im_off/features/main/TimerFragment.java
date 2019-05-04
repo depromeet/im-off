@@ -251,14 +251,14 @@ public class TimerFragment extends Fragment {
         ivBackgroundCircle.setImageResource(R.drawable.image_dot_circle_red);
 
         // 퇴근시간 설정
-        tvLeavingWork.setText(DateUtils.nightWorkingTimeTitle());
+        tvLeavingWork.setText(DateUtils.nightWorkingTimeTitle(calendar));
 
         // 그래프 설정
         if (getContext() != null) {
             roundProgressBar.setCricleProgressColor(ContextCompat.getColor(getContext(), R.color.round_red));
         }
-        roundProgressBar.setText(DateUtils.nightWorkingTime());
-        roundProgressBar.setTimeWithAnim(DateUtils.todayOffStartTime(), calendar.getTime());
+        roundProgressBar.setText(DateUtils.nightWorkingTime(calendar));
+        roundProgressBar.setTimeWithAnim(DateUtils.todayOffStartTime(calendar), calendar.getTime());
 
         //버튼 설정
         tvLeaving.setText("퇴근");

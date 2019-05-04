@@ -40,9 +40,9 @@ public class LeavingWork {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(leavingTime);
         this.workingTime = leavingTime
-                - DateUtils.todayStartWorkingTime(calendar).getTime()
+                - DateUtils.getStartWorkingTime(calendar).getTime()
                 - 1000 * 60 * 60;
-        this.isKaltoe = new Date(leavingTime).before(DateUtils.todayOffEndTime());
+        this.isKaltoe = new Date(leavingTime).before(DateUtils.todayOffEndTime(calendar));
         this.dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
     }
 
