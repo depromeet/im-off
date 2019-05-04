@@ -154,7 +154,7 @@ public class TimerFragment extends Fragment {
         roundProgressBar.setArcIsDisplayable(false);
 
         btnLeaving.setVisibility(View.INVISIBLE);
-        tvLeavingWork.setVisibility(View.INVISIBLE);
+        tvLeavingWork.setVisibility(View.VISIBLE);
     }
 
     private void setKaltoeResultUi(LeavingWork leavingWork) {
