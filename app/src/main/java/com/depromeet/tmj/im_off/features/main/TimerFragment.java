@@ -215,6 +215,9 @@ public class TimerFragment extends Fragment {
         // 파란 눈금 설정
         ivBackgroundCircle.setImageResource(R.drawable.image_dot_circle_blue);
 
+        if(getContext() != null) {
+            roundProgressBar.setCricleProgressColor(ContextCompat.getColor(getContext(), R.color.round_blue));
+        }
         roundProgressBar.setText(DateUtils.workingTime(calendar));
 
         //버튼 설정
@@ -229,6 +232,9 @@ public class TimerFragment extends Fragment {
         ivBackgroundCircle.setImageResource(R.drawable.image_dot_circle_blue);
 
         // 그래프 설정
+        if(getContext() != null) {
+            roundProgressBar.setCricleProgressColor(ContextCompat.getColor(getContext(), R.color.round_blue));
+        }
         roundProgressBar.setText(DateUtils.remainingTime(DateUtils.todayOffStartTime(), calendar.getTime()));
         roundProgressBar.setTimeWithAnim(DateUtils.todayStartWorkingTime(calendar), calendar.getTime());
 
