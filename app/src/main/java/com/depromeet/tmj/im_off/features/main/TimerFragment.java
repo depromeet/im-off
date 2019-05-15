@@ -129,12 +129,6 @@ public class TimerFragment extends Fragment {
     }
 
     private void initUi() {
-
-        if (BuildConfig.DEBUG) {
-//            calendar.set(Calendar.DAY_OF_MONTH, 16);
-//            calendar.set(Calendar.HOUR_OF_DAY, 7);
-        }
-
         Animation rotation = AnimationUtils.loadAnimation(getContext(), R.anim.rotate);
         ivBackgroundCircle.startAnimation(rotation);
 
@@ -152,7 +146,6 @@ public class TimerFragment extends Fragment {
         ivBackgroundCircle.setImageResource(R.drawable.image_dot_circle_gray);
 
         roundProgressBar.setArcIsDisplayable(false);
-
         btnLeaving.setVisibility(View.INVISIBLE);
         tvLeavingWork.setVisibility(View.VISIBLE);
     }
@@ -221,6 +214,7 @@ public class TimerFragment extends Fragment {
         roundProgressBar.setText(DateUtils.workingTime(calendar));
 
         //버튼 설정
+        roundProgressBar.setTextAMPMVisible(false);
         tvLeaving.setVisibility(View.INVISIBLE);
         btnLeaving.setVisibility(View.INVISIBLE);
     }
@@ -235,6 +229,7 @@ public class TimerFragment extends Fragment {
         if(getContext() != null) {
             roundProgressBar.setCricleProgressColor(ContextCompat.getColor(getContext(), R.color.round_blue));
         }
+        roundProgressBar.setTextAMPMVisible(false);
         roundProgressBar.setText(DateUtils.remainingTime(DateUtils.todayOffStartTime(), calendar.getTime()));
         roundProgressBar.setTimeWithAnim(DateUtils.todayStartWorkingTime(calendar), calendar.getTime());
 
@@ -257,6 +252,7 @@ public class TimerFragment extends Fragment {
         if (getContext() != null) {
             roundProgressBar.setCricleProgressColor(ContextCompat.getColor(getContext(), R.color.round_red));
         }
+        roundProgressBar.setTextAMPMVisible(false);
         roundProgressBar.setText(DateUtils.nightWorkingTime(calendar));
         roundProgressBar.setTimeWithAnim(DateUtils.todayOffStartTime(calendar), calendar.getTime());
 
