@@ -6,7 +6,7 @@ android {
         applicationId "com.depromeet.tmj.im_off"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 9
+        versionCode 10
         versionName "1.0.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
