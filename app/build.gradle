@@ -6,8 +6,8 @@ android {
         applicationId "com.depromeet.tmj.im_off"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 8
-        versionName "1.0.7"
+        versionCode 10
+        versionName "1.0.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -26,6 +26,7 @@ android {
     buildTypes {
         buildTypes {
             debug {
+                applicationIdSuffix ".debug"
                 minifyEnabled false
                 debuggable true
                 signingConfig signingConfigs.debug

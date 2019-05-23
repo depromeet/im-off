@@ -35,6 +35,7 @@
         android:text="@string/working_monday"
         android:textColor="@color/colorText"
         android:textSize="34sp"
+        android:includeFontPadding="false"
         app:layout_constraintStart_toStartOf="@id/gl_left"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -53,13 +54,14 @@
 
     <ImageView
         android:id="@+id/iv_bg_circle"
-        android:layout_width="304dp"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="84dp"
+        android:layout_marginEnd="104dp"
         android:layout_marginBottom="30dp"
         android:adjustViewBounds="true"
         android:src="@drawable/image_dot_circle_blue"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.8"
+        app:layout_constraintTop_toBottomOf="@id/tv_leaving_work_time"
         app:layout_constraintBottom_toTopOf="@id/tv_statistics"
         app:layout_constraintEnd_toEndOf="parent" />
 

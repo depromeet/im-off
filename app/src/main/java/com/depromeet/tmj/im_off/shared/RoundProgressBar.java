@@ -215,6 +215,10 @@ public class RoundProgressBar extends View {
         isResult = true;
     }
 
+    public void setTextAMPMVisible(boolean isVisible) {
+        isResult = isVisible;
+    }
+
     public void setTextIsDisplayable(boolean textIsDisplayable) {
         this.textIsDisplayable = textIsDisplayable;
     }
