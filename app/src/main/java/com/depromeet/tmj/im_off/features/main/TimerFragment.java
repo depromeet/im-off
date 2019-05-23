@@ -208,7 +208,7 @@ public class TimerFragment extends Fragment {
         // 파란 눈금 설정
         ivBackgroundCircle.setImageResource(R.drawable.image_dot_circle_blue);
 
-        if(getContext() != null) {
+        if (getContext() != null) {
             roundProgressBar.setCricleProgressColor(ContextCompat.getColor(getContext(), R.color.round_blue));
         }
         roundProgressBar.setText(DateUtils.workingTime(calendar));
@@ -226,7 +226,7 @@ public class TimerFragment extends Fragment {
         ivBackgroundCircle.setImageResource(R.drawable.image_dot_circle_blue);
 
         // 그래프 설정
-        if(getContext() != null) {
+        if (getContext() != null) {
             roundProgressBar.setCricleProgressColor(ContextCompat.getColor(getContext(), R.color.round_blue));
         }
         roundProgressBar.setTextAMPMVisible(false);
@@ -343,12 +343,14 @@ public class TimerFragment extends Fragment {
                             if (AppPreferencesDataStore.getInstance().getStartWorkingHour() - calendar.get(Calendar.HOUR_OF_DAY) <= 3
                                     && AppPreferencesDataStore.getInstance().getStartWorkingHour() - calendar.get(Calendar.HOUR_OF_DAY) > 0) {
                                 setWaitUi(calendar);
-                            } else {
+                            } else if (calendar.get(Calendar.HOUR_OF_DAY) < AppPreferencesDataStore.getInstance().getStartWorkingHour()) {
                                 if (leavingWork.isKaltoe()) {
                                     setKaltoeResultUi(leavingWork);
                                 } else {
                                     setNightWorkingResultUi(leavingWork);
                                 }
+                            } else {
+                                setWorkingUi(calendar);
                             }
                         }
 
