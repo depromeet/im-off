@@ -129,12 +129,6 @@ public class TimerFragment extends Fragment {
     }
 
     private void initUi() {
-
-        if (BuildConfig.DEBUG) {
-//            calendar.set(Calendar.DAY_OF_MONTH, 16);
-//            calendar.set(Calendar.HOUR_OF_DAY, 7);
-        }
-
         Animation rotation = AnimationUtils.loadAnimation(getContext(), R.anim.rotate);
         ivBackgroundCircle.startAnimation(rotation);
 
@@ -152,7 +146,6 @@ public class TimerFragment extends Fragment {
         ivBackgroundCircle.setImageResource(R.drawable.image_dot_circle_gray);
 
         roundProgressBar.setArcIsDisplayable(false);
-
         btnLeaving.setVisibility(View.INVISIBLE);
         tvLeavingWork.setVisibility(View.VISIBLE);
     }
@@ -181,6 +174,7 @@ public class TimerFragment extends Fragment {
 
         //버튼 설정
         tvLeaving.setText("공유");
+        btnLeaving.setVisibility(View.INVISIBLE);
         btnLeaving.setOnClickListener(view -> setShare());
     }
 
@@ -207,6 +201,7 @@ public class TimerFragment extends Fragment {
 
         //버튼 설정
         tvLeaving.setText("공유");
+        btnLeaving.setVisibility(View.INVISIBLE);
         btnLeaving.setOnClickListener(view -> setShare());
     }
 
@@ -215,12 +210,13 @@ public class TimerFragment extends Fragment {
         // 파란 눈금 설정
         ivBackgroundCircle.setImageResource(R.drawable.image_dot_circle_blue);
 
-        if(getContext() != null) {
+        if (getContext() != null) {
             roundProgressBar.setCricleProgressColor(ContextCompat.getColor(getContext(), R.color.round_blue));
         }
         roundProgressBar.setText(DateUtils.workingTime(calendar));
 
         //버튼 설정
+        roundProgressBar.setTextAMPMVisible(false);
         tvLeaving.setVisibility(View.INVISIBLE);
         btnLeaving.setVisibility(View.INVISIBLE);
     }
@@ -232,14 +228,16 @@ public class TimerFragment extends Fragment {
         ivBackgroundCircle.setImageResource(R.drawable.image_dot_circle_blue);
 
         // 그래프 설정
-        if(getContext() != null) {
+        if (getContext() != null) {
             roundProgressBar.setCricleProgressColor(ContextCompat.getColor(getContext(), R.color.round_blue));
         }
+        roundProgressBar.setTextAMPMVisible(false);
         roundProgressBar.setText(DateUtils.remainingTime(DateUtils.todayOffStartTime(), calendar.getTime()));
         roundProgressBar.setTimeWithAnim(DateUtils.todayStartWorkingTime(calendar), calendar.getTime());
 
         //버튼 설정
         tvLeaving.setText("퇴근");
+        btnLeaving.setVisibility(View.INVISIBLE);
         btnLeaving.setOnClickListener(view -> showLeavingDialog());
     }
 
@@ -257,11 +255,13 @@ public class TimerFragment extends Fragment {
         if (getContext() != null) {
             roundProgressBar.setCricleProgressColor(ContextCompat.getColor(getContext(), R.color.round_red));
         }
+        roundProgressBar.setTextAMPMVisible(false);
         roundProgressBar.setText(DateUtils.nightWorkingTime(calendar));
         roundProgressBar.setTimeWithAnim(DateUtils.todayOffStartTime(calendar), calendar.getTime());
 
         //버튼 설정
         tvLeaving.setText("퇴근");
+        btnLeaving.setVisibility(View.INVISIBLE);
         btnLeaving.setOnClickListener(view -> showLeavingDialog());
     }
 
@@ -339,20 +339,24 @@ public class TimerFragment extends Fragment {
         if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
             setWeekendUi(calendar);
         } else {
-
             Injection.provideLeavingWorkRepository().getLeavingWork(DateUtils.calendar2String(calendar),
                     new LeavingWorkDataSource.GetLeavingWorkCallback() {
                         @Override
                         public void onDataLoaded(LeavingWork leavingWork) {
+                            Calendar leavingCal = Calendar.getInstance();
+                            leavingCal.setTimeInMillis(leavingWork.getLeavingTime());
                             if (AppPreferencesDataStore.getInstance().getStartWorkingHour() - calendar.get(Calendar.HOUR_OF_DAY) <= 3
                                     && AppPreferencesDataStore.getInstance().getStartWorkingHour() - calendar.get(Calendar.HOUR_OF_DAY) > 0) {
                                 setWaitUi(calendar);
-                            } else {
+                            } else if (leavingCal.get(Calendar.HOUR_OF_DAY) < AppPreferencesDataStore.getInstance().getStartWorkingHour() ||
+                                    leavingCal.get(Calendar.HOUR_OF_DAY) > AppPreferencesDataStore.getInstance().getLeavingOffHour()) {
                                 if (leavingWork.isKaltoe()) {
                                     setKaltoeResultUi(leavingWork);
                                 } else {
                                     setNightWorkingResultUi(leavingWork);
                                 }
+                            } else {
+                                setWorkingUi(calendar);
                             }
                         }
 
