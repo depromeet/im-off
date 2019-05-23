@@ -174,6 +174,7 @@ public class TimerFragment extends Fragment {
 
         //버튼 설정
         tvLeaving.setText("공유");
+        btnLeaving.setVisibility(View.INVISIBLE);
         btnLeaving.setOnClickListener(view -> setShare());
     }
 
@@ -200,6 +201,7 @@ public class TimerFragment extends Fragment {
 
         //버튼 설정
         tvLeaving.setText("공유");
+        btnLeaving.setVisibility(View.INVISIBLE);
         btnLeaving.setOnClickListener(view -> setShare());
     }
 
@@ -235,6 +237,7 @@ public class TimerFragment extends Fragment {
 
         //버튼 설정
         tvLeaving.setText("퇴근");
+        btnLeaving.setVisibility(View.INVISIBLE);
         btnLeaving.setOnClickListener(view -> showLeavingDialog());
     }
 
@@ -258,6 +261,7 @@ public class TimerFragment extends Fragment {
 
         //버튼 설정
         tvLeaving.setText("퇴근");
+        btnLeaving.setVisibility(View.INVISIBLE);
         btnLeaving.setOnClickListener(view -> showLeavingDialog());
     }
 
@@ -335,15 +339,17 @@ public class TimerFragment extends Fragment {
         if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
             setWeekendUi(calendar);
         } else {
-
             Injection.provideLeavingWorkRepository().getLeavingWork(DateUtils.calendar2String(calendar),
                     new LeavingWorkDataSource.GetLeavingWorkCallback() {
                         @Override
                         public void onDataLoaded(LeavingWork leavingWork) {
+                            Calendar leavingCal = Calendar.getInstance();
+                            leavingCal.setTimeInMillis(leavingWork.getLeavingTime());
                             if (AppPreferencesDataStore.getInstance().getStartWorkingHour() - calendar.get(Calendar.HOUR_OF_DAY) <= 3
                                     && AppPreferencesDataStore.getInstance().getStartWorkingHour() - calendar.get(Calendar.HOUR_OF_DAY) > 0) {
                                 setWaitUi(calendar);
-                            } else if (calendar.get(Calendar.HOUR_OF_DAY) < AppPreferencesDataStore.getInstance().getStartWorkingHour()) {
+                            } else if (leavingCal.get(Calendar.HOUR_OF_DAY) < AppPreferencesDataStore.getInstance().getStartWorkingHour() ||
+                                    leavingCal.get(Calendar.HOUR_OF_DAY) > AppPreferencesDataStore.getInstance().getLeavingOffHour()) {
                                 if (leavingWork.isKaltoe()) {
                                     setKaltoeResultUi(leavingWork);
                                 } else {
