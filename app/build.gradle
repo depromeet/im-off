@@ -6,8 +6,8 @@ android {
         applicationId "com.depromeet.tmj.im_off"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 10
-        versionName "1.0.8"
+        versionCode 11
+        versionName "1.0.9"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -26,6 +26,7 @@ android {
     buildTypes {
         buildTypes {
             debug {
+                manifestPlaceholders = [ appLabel: "칼퇴요정(Debug)" ]
                 applicationIdSuffix ".debug"
                 minifyEnabled false
                 debuggable true
@@ -34,6 +35,7 @@ android {
             }
 
             release {
+                manifestPlaceholders = [ appLabel: "칼퇴요정" ]
                 minifyEnabled true
                 debuggable false
                 signingConfig signingConfigs.release
