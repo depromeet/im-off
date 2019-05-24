@@ -174,7 +174,6 @@ public class TimerFragment extends Fragment {
 
         //버튼 설정
         tvLeaving.setText("공유");
-        btnLeaving.setVisibility(View.INVISIBLE);
         btnLeaving.setOnClickListener(view -> setShare());
     }
 
@@ -201,7 +200,6 @@ public class TimerFragment extends Fragment {
 
         //버튼 설정
         tvLeaving.setText("공유");
-        btnLeaving.setVisibility(View.INVISIBLE);
         btnLeaving.setOnClickListener(view -> setShare());
     }
 
@@ -237,7 +235,6 @@ public class TimerFragment extends Fragment {
 
         //버튼 설정
         tvLeaving.setText("퇴근");
-        btnLeaving.setVisibility(View.INVISIBLE);
         btnLeaving.setOnClickListener(view -> showLeavingDialog());
     }
 
@@ -261,7 +258,6 @@ public class TimerFragment extends Fragment {
 
         //버튼 설정
         tvLeaving.setText("퇴근");
-        btnLeaving.setVisibility(View.INVISIBLE);
         btnLeaving.setOnClickListener(view -> showLeavingDialog());
     }
 

@@ -90,6 +90,8 @@ public class StatisticsFragment extends Fragment {
         constraintSet.connect(adView.getId(), ConstraintSet.START, root.getId(), ConstraintSet.START);
         constraintSet.connect(adView.getId(), ConstraintSet.END, root.getId(), ConstraintSet.END);
         constraintSet.connect(adView.getId(), ConstraintSet.BOTTOM, root.getId(), ConstraintSet.BOTTOM);
+
+        constraintSet.connect(R.id.rv_statistics ,ConstraintSet.BOTTOM, adView.getId(), ConstraintSet.TOP,0);
         constraintSet.applyTo(root);
 
         AdRequest adRequest = new AdRequest.Builder().build();
