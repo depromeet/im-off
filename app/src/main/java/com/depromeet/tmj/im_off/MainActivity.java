@@ -94,9 +94,7 @@ public class MainActivity extends AppCompatActivity implements TimerFragment.Scr
 
     private void initNoti() {
         NotificationAlarmManager alarmManager = new NotificationAlarmManager(this);
-        if (DateUtils.nowTime() < DateUtils.todayOffStartTime(DateUtils.nowCalendar()).getTime() && !AppPreferencesDataStore.getInstance().getTodayLeaving()) {
-            alarmManager.registerAll();
-        }
+        alarmManager.registerAll();
     }
 
     private void setShare() {
