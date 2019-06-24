@@ -6,6 +6,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
 
@@ -16,6 +18,9 @@ import com.depromeet.tmj.im_off.utils.datastore.AppPreferencesDataStore;
 import androidx.core.app.NotificationCompat;
 
 import java.util.Random;
+
+import static androidx.core.app.NotificationCompat.DEFAULT_SOUND;
+import static androidx.core.app.NotificationCompat.DEFAULT_VIBRATE;
 
 public class NotificationNotify {
     private Context context;
@@ -47,13 +52,14 @@ public class NotificationNotify {
 
     private void wakeUpDevice(String tag) {
         PowerManager.WakeLock screenOn = ((PowerManager) context.getSystemService(Context.POWER_SERVICE))
-                .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, tag);
+                .newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, tag);
 
         screenOn.acquire(2000);
     }
 
     private NotificationCompat.Builder createNotificationBuilder(NotificationType notificationType,
                                                                  PendingIntent pendingIntent) {
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         Random random = new Random();
         String title = context.getString(notificationType.getTitleRes());
         String message = context.getString(messages[random.nextInt(8)]);
@@ -83,7 +89,9 @@ public class NotificationNotify {
                 .setSmallIcon(notificationType.getIconRes())
                 .setStyle(style)
                 .setColor(context.getResources().getColor(R.color.bg_app_icon))
+                .setDefaults(DEFAULT_SOUND | DEFAULT_VIBRATE)
                 .setAutoCancel(true)
+                .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
     }
 }
