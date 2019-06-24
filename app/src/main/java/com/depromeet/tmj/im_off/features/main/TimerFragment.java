@@ -97,9 +97,6 @@ public class TimerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_timer, container, false);
         initBinding(view);
         initUi();
-        if (this.isLeaving) {
-            showLeavingDialog();
-        }
         return view;
     }
 

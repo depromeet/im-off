@@ -30,10 +30,11 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
             int ordinal = intent.getIntExtra(EXTRA_NOTI_TYPE, -1);
 
             AppPreferencesDataStore dataStore = AppPreferencesDataStore.getInstance();
-            if (ordinal != -1 && dataStore.getNotiEnable() && !dataStore.getTodayLeaving()) {
+            if (ordinal != -1 && dataStore.getNotiEnable()) {
                 NotificationType notificationType = NotificationType.values()[ordinal];
                 NotificationNotify notificationNotify = new NotificationNotify(context);
                 notificationNotify.sendPush(notificationType);
+                new NotificationAlarmManager(context).registerAll();
             }
         }
     }
