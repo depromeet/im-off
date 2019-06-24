@@ -1,5 +1,6 @@
 package com.depromeet.tmj.im_off;
 
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -93,7 +94,12 @@ public class MainActivity extends AppCompatActivity implements TimerFragment.Scr
     }
 
     private void initNoti() {
+        NotificationManager notifiyMgr = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notifiyMgr.cancelAll();
+
         NotificationAlarmManager alarmManager = new NotificationAlarmManager(this);
+
         alarmManager.registerAll();
     }
 
