@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.depromeet.tmj.im_off.utils.DateUtils;
 import com.depromeet.tmj.im_off.utils.datastore.AppPreferencesDataStore;
 
 public class NotificationBroadcastReceiver extends BroadcastReceiver {
@@ -33,7 +34,8 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
             if (ordinal != -1 && dataStore.getNotiEnable()) {
                 NotificationType notificationType = NotificationType.values()[ordinal];
                 NotificationNotify notificationNotify = new NotificationNotify(context);
-                notificationNotify.sendPush(notificationType);
+                if (!DateUtils.isWeekend())
+                    notificationNotify.sendPush(notificationType);
                 new NotificationAlarmManager(context).registerAll();
             }
         }
