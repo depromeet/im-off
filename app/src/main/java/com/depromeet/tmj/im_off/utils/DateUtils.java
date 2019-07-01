@@ -71,7 +71,7 @@ public class DateUtils {
         Calendar offTime = Calendar.getInstance();
         offTime.setTimeInMillis(calendar.getTimeInMillis());
 
-        if(offTime.get(Calendar.HOUR_OF_DAY) < dataStore.getLeavingOffHour()) {
+        if (offTime.get(Calendar.HOUR_OF_DAY) < dataStore.getLeavingOffHour()) {
             offTime.add(Calendar.DATE, -1);
         }
 
@@ -109,7 +109,7 @@ public class DateUtils {
         Calendar startTime = Calendar.getInstance();
         startTime.setTimeInMillis(calendar.getTimeInMillis());
 
-        if(startTime.get(Calendar.HOUR_OF_DAY) < dataStore.getStartWorkingHour()) {
+        if (startTime.get(Calendar.HOUR_OF_DAY) < dataStore.getStartWorkingHour()) {
             startTime.add(Calendar.DATE, -1);
         }
         startTime.set(Calendar.HOUR_OF_DAY, dataStore.getStartWorkingHour());
@@ -124,7 +124,7 @@ public class DateUtils {
         Calendar offTime = Calendar.getInstance();
         offTime.setTimeInMillis(calendar.getTimeInMillis());
 
-        if(offTime.get(Calendar.HOUR_OF_DAY) < dataStore.getStartWorkingHour()) {
+        if (offTime.get(Calendar.HOUR_OF_DAY) < dataStore.getStartWorkingHour()) {
             offTime.add(Calendar.DATE, -1);
         }
 
@@ -188,6 +188,11 @@ public class DateUtils {
 
     public static int getDayOfWeek() {
         return Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
+    }
+
+    public static boolean isWeekend() {
+        int dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+        return dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY;
     }
 
     public static Long getThisWeekMonday() {
