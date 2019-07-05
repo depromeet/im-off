@@ -344,7 +344,7 @@ public class TimerFragment extends Fragment {
                             } else if (leavingWork.isKaltoe()) {
                                 setKaltoeResultUi(leavingWork);
                             } else if (leavingCal.get(Calendar.HOUR_OF_DAY) < AppPreferencesDataStore.getInstance().getStartWorkingHour() ||
-                                    leavingCal.get(Calendar.HOUR_OF_DAY) > AppPreferencesDataStore.getInstance().getLeavingOffHour()) {
+                                    leavingCal.get(Calendar.HOUR_OF_DAY) >= AppPreferencesDataStore.getInstance().getLeavingOffHour()) {
                                 if (leavingWork.isKaltoe()) {
                                     setKaltoeResultUi(leavingWork);
                                 } else {
